@@ -1,0 +1,52 @@
+export EDITOR=vi
+export VISUAL=vi
+export EDITOR_PREFIX=vi
+
+export NOTES_DIR=$HOME/repos/github/guitarpie/notes
+export REPOS=$HOME/repos
+
+# \e = \033 using [38;2 for rgb foreground colors. 
+# [48;2 for rgb background colors.
+PS1='\[\e[1m\e[38;2;26;115;232m\]\u\[\e[00m\]:\[\e[1m\e[38;2;132;108;183m\]\w\[\e[00m\]\$ '
+
+which go &>/dev/null
+if [ $? -eq 1 ]; then
+  if [ -d "/usr/local/go" ]; then 
+    export PATH=$PATH:/usr/local/go/bin
+  else
+    echo "Error Go Lang not installed"
+  fi
+fi
+
+if [ -d "$HOME/.deno" ]; then 
+  export PATH=$PATH:$HOME/.deno/bin
+else
+  echo "Error deno not installed"
+fi
+
+source /usr/share/bash-completion/bash_completion
+
+set -o vi
+
+if [ ! -d "~/.local/bin" ]; then
+  mkdir -p ~/.local/bin
+fi
+if [ ! -d "~/.local/snips" ]; then
+  mkdir -p ~/.local/snips
+fi
+if [ ! -d "~/.local/go" ]; then
+  mkdir -p ~/.local/go
+fi
+
+export PATH=~/.local/bin/scripts:\
+~/.local/bin:\
+~/.cargo/bin/:\
+~/.local/go/bin/:\
+$PATH
+export CDPATH=./:\
+$HOME/repos/gitlab/guitarpie:\
+$HOME/repos/github/guitarpie
+export SNIPS_DIR=$HOME/.local/snips
+export GOPATH=$HOME/.local/go
+
+alias vi=vim

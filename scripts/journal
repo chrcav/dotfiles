@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ ! $NOTES_DIR ]; then
+  echo "NOTES_DIR not defined"
+  exit 1
+fi
+newEntry=$(date +%y-%m-%d)
+echo $newEntry
+cd $NOTES_DIR/
+mkdir -p journal/$newEntry 2>/dev/null
+cd journal/$newEntry
+if [ ! -e README.md ]; then
+  touch README.md
+fi
+exec vim + README.md

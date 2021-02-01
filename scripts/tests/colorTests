@@ -1,0 +1,63 @@
+#!/bin/bash
+## move to scripts folder
+cd ../
+
+declare -i totalTests=0
+for i in f fff ffffff; do
+  echo '------------------------------------------'
+  echo Testing $i
+  totalTests=$((totalTests+1))
+  ./color $i > /dev/null
+  test $? -eq 0 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+done
+for i in ff ffff fffff; do
+  echo '------------------------------------------'
+  echo Testing $i
+  totalTests=$((totalTests+1))
+  ./color $i > /dev/null
+  test $? -eq 1 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+done
+
+echo '------------------------------------------'
+echo Testing white
+totalTests=$((totalTests+1))
+./color 255 255 255 > /dev/null
+test $? -eq 0 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+
+echo '------------------------------------------'
+echo Testing red
+totalTests=$((totalTests+1))
+./color 255 0 0 > /dev/null
+test $? -eq 0 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+echo '------------------------------------------'
+echo Testing green
+totalTests=$((totalTests+1))
+./color 0 255 0 > /dev/null
+test $? -eq 0 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+echo '------------------------------------------'
+echo Testing blue
+totalTests=$((totalTests+1))
+./color 0 0 255 > /dev/null
+test $? -eq 0 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+
+echo '------------------------------------------'
+echo Testing integer out of range
+totalTests=$((totalTests+1))
+./color 0 0 256 > /dev/null
+test $? -eq 1 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+totalTests=$((totalTests+1))
+./color 0 0 -1 > /dev/null
+test $? -eq 1 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+
+echo '------------------------------------------'
+echo Testing non numeric values out of range
+totalTests=$((totalTests+1))
+./color 0 rhs 0 > /dev/null
+test $? -eq 1 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+totalTests=$((totalTests+1))
+./color 0 0 abc > /dev/null
+test $? -eq 1 && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+
+echo "-----------------------------------------"
+echo "$passing tests Passing out of $totalTests"
+echo "-----------------------------------------"

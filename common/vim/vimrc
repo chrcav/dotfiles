@@ -1,0 +1,187 @@
+
+set number
+
+set expandtab
+set autoindent
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set smartindent
+set smarttab
+
+set textwidth=73
+
+set ruler
+set visualbell
+colorscheme ron
+
+" easier to see characters when `set paste` is on
+set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
+
+set wrap
+set linebreak
+
+set shortmess=aoOtI    " avoid most of the 'Hit Enter ...' messages
+set viminfo='20,<1000,s1000 " prevents truncated yanks, deletes, etc.
+
+set scrolloff=999
+
+set spell spelllang=en_us
+
+set formatoptions-=t   " don't auto-wrap text using text width
+set formatoptions+=c   " autowrap comments using textwidth with leader
+set formatoptions-=r   " don't auto-insert comment leader on enter in insert
+
+" stop complaining when switching buffers with changes
+set hidden
+
+set history=100
+
+syntax enable
+" allow sensing the filetype
+filetype plugin on
+
+" Install vim-plug if not already installed
+" (Yes I know about Vim 8 Plugins. They suck.)
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+   \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+
+
+if filereadable(expand("~/.vim/autoload/plug.vim"))
+  call plug#begin('~/.vimplugins')
+
+  " ------------------
+  " pandoc plugins
+  " ------------------
+  " vim-pandoc: pandoc markdown support for vim
+  Plug 'vim-pandoc/vim-pandoc'
+  " vim pandoc syntax simple: adds on vim-pandoc
+  Plug 'https://gitlab.com/rwxrob/vim-pandoc-syntax-simple'
+
+  " ------------------
+  " language support plugins
+  " ------------------
+  " vim-go: supports go fmt and checks on exit
+  Plug 'fatih/vim-go'
+  " vim-haskell
+  Plug 'zenzike/vim-haskell'
+  " rust-vim:
+  Plug 'rust-lang/rust.vim'
+  Plug 'racer-rust/vim-racer'
+  " javascript with tern
+  Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+
+  " ------------------
+  " git functionality
+  " ------------------
+  " gitgutter: git line status in gutter
+  Plug 'airblade/vim-gitgutter'
+
+  " ------------------
+  " completion engines
+  " ------------------
+  "  YCM: more complete package performs omnifunc and syntastic
+  "  functionality
+  "Plug 'Valloric/YouCompleteMe'
+  " deoplete is too dependent on python.
+  " mucomplete minimalist completion
+  Plug 'lifepillar/vim-mucomplete'
+
+  " ------------------
+  " syntax checking
+  " ------------------
+  "  YCM: more complete package performs deoplete and syntastic
+  "  functionality
+  " syntastic: uses native linters/checkers
+  Plug 'vim-syntastic/syntastic'
+
+  " ------------------
+  " file/folder hierarchy plugins
+  " ------------------
+  " nerdtree: gives access to file hierarchy
+  Plug 'preservim/nerdtree'
+
+  " ctrlp: file search and open.
+  Plug 'ctrlpvim/ctrlp.vim'
+
+  call plug#end()
+  " golang plugin configurations
+  if exists('g:plugs["vim-go"]')
+    let g:go_fmt_command = 'goimports' " autoupdate import
+    let g:go_fmt_autosave = 1
+  else
+    autocmd vimleavepre *.go !gofmt -w %
+  endif
+
+  " mucomplete settings
+  if exists('g:plugs["vim-mucomplete"]')
+    set completeopt+=menuone
+    "let g:mucomplete#enable_auto_at_startup = 1
+  endif
+
+  " rust racer settings
+  " requires: racer
+  " $ rustup toolchain add nightly
+  " $ cargo +nightly install racer
+  if exists('g:plugs["vim-racer"]')
+    let g:racer_experimental_completer = 1
+    augroup Racer
+      autocmd!
+      autocmd FileType rust nmap <buffer> gd         <Plug>(rust-def)
+      autocmd FileType rust nmap <buffer> gs         <Plug>(rust-def-split)
+      autocmd FileType rust nmap <buffer> gx         <Plug>(rust-def-vertical)
+      autocmd FileType rust nmap <buffer> gt         <Plug>(rust-def-tab)
+      autocmd FileType rust nmap <buffer> <leader>gd <Plug>(rust-doc)
+    augroup END
+  endif
+
+  " syntastic plugin configurations
+  if exists('g:plugs["syntastic"]')
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
+  endif
+
+  " tern settings
+  if exists('g:plugs["tern_for_vim"]')
+    let g:tern_show_argument_hints = 'on_hold'
+    let g:tern_show_signature_in_pum = 1
+    autocmd FileType javascript,stratos setlocal omnifunc=tern#Complete
+    autocmd FileType javascript,stratos nnoremap <silent> <buffer> gd :TernDef<CR>
+    autocmd FileType javascript,stratos nnoremap <silent> <buffer> gr :TernRefs<CR>
+  endif
+endif
+
+autocmd vimleavepre *.rs !rustfmt %
+
+set omnifunc=syntaxcomplete#Complete " enable omni-completion
+" requires gopls
+" $ go get golang.org/x/tools/gopls
+autocmd FileType go setlocal omnifunc=go#complete#Complete
+
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
+" tells vim to remember the current line on close and reload.
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+set pastetoggle=<F3>
+
+" disable arrow keys.
+noremap <up> :echoerr "Umm, use k instead"<CR>
+noremap <down> :echoerr "Umm, use j instead"<CR>
+noremap <left> :echoerr "Umm, use h instead"<CR>
+noremap <right> :echoerr "Umm, use l instead"<CR>
+inoremap <up> <NOP>
+inoremap <down> <NOP>
+inoremap <left> <NOP>
+inoremap <right> <NOP>
+
+map <C-n> :NERDTreeToggle<CR>
+

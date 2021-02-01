@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$(which i3status)" ]; then
+  echo Need to install i3status.
+  exit 1
+fi
+
+mkdir ~/.config/ 2>/dev/null
+unlink "$HOME/.config/i3status" 2>/dev/null
+ln -sf "$PWD" "$HOME/.config/i3status"
+

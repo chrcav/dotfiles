@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $# != 2 ]; then
+  echo << EOF
+Incorrect number of arguments
+usage: addsnip <filetype> <name>
+EOF
+fi
+
+dest=$SNIPS_DIR
+if [ -z $dest ]; then
+  dest="."
+fi
+
+if [ -f $dest/$1-$2 ]; then
+  echo "The snip $1-$2 already exists"
+  exit 1
+fi
+
+IFS=''
+while read -r snip; do
+  echo $snip >> $dest/$1-$2
+done <&0

@@ -1,0 +1,2 @@
+#!/bin/sh
+lynx "www.bing.com/search?q=$*"

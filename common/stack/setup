@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$(which stack)" ]; then
+  echo Need to install haskell stack.
+  exit 1
+fi
+
+mkdir ~/.stack/ 2>/dev/null
+unlink "$HOME/.stack/config.yaml" 2>/dev/null
+ln -sf "$PWD/config.yaml" "$HOME/.stack/config.yaml"
+

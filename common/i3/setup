@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$(which i3)" ]; then
+  echo Need to install i3.
+  exit 1
+fi
+
+mkdir ~/.config/ 2>/dev/null
+unlink "$HOME/.config/i3" 2>/dev/null
+ln -sf "$PWD" "$HOME/.config/i3"
+

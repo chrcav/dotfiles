@@ -1,0 +1,37 @@
+#!/bin/bash
+
+hex2rgb () {
+  printf "%i %i %i\n" "0x${1:0:2}" "0x${1:2:2}" "0x${1:4:2}"
+}
+is8bitVal () {
+  declare -i val=$1
+  if [ $val -lt 0 ] || [ $val -gt 255 ]; then
+    echo "integer $1 out of range 0-255"
+    exit 1
+  fi
+  echo $val
+}
+
+if [[ $# == 1 ]]; then
+  # process hex value
+  case ${#1} in
+    6) hex=$1 ;;
+    3) hex=${1:0:1}${1:0:1}${1:1:1}${1:1:1}${1:2}${1:2} ;;
+    1) hex=$1$1$1$1$1$1 ;;
+    *) exit 1 ;;
+  esac
+  ./color $(hex2rgb $hex)
+  exit 0
+fi
+
+if [[ $# == 3 ]]; then
+  # process rgb
+  declare -i r=$(is8bitVal "$1")
+  declare -i g=$(is8bitVal "$2")
+  declare -i b=$(is8bitVal "$3")
+  echo -e $"\e[38;2;$r;$g;${b}m"
+  exit 0
+fi
+
+echo "not enough arguments"
+exit 1

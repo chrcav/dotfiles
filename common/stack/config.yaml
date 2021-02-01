@@ -1,0 +1,15 @@
+# stop downloading GHCs into ~/.stack
+install-ghc: false
+
+# allow stack to pick the system ghc (false by default)
+system-ghc: true
+
+# allow e.g. GHC 8.8.3 from Arch with stack snapshot 8.8.2
+compiler-check: newer-minor
+
+# fix "there are files missing" ghc compile errors
+ghc-options:
+  "$everything": -dynamic
+
+# Ref:
+# http://docs.haskellstack.org/en/stable/yaml_configuration/#system-ghc

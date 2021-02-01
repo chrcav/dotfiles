@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for dir in */; do pushd $dir; ./setup; popd; done
+
+unlink "$HOME/.local/bin/scripts"
+ln -sf "$REPOS/github/guitarpie/dotfiles/scripts" "$HOME/.local/bin/scripts"

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ $# != 2 ]; then
+  echo << EOF
+Incorrect number of arguments
+usage: snip <filetype> <name>
+EOF
+fi
+
+dest=$SNIPS_DIR
+if [ -z $dest ]; then
+  dest="."
+fi
+
+cat $dest/$1-$2
+
