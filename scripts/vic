@@ -1,3 +1,4 @@
 #!/bin/sh
+# taken from rwxrob/dotfiles
 
 vim $(which $1)

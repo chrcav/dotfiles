@@ -1,4 +1,5 @@
 #!/bin/sh
+# taken from rwxrob/dotfiles
 
 # The world's best pastebin terminal replacement. I'm so in love.
 # You can call this from *within* vi!
