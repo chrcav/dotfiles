@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -z "$(which git)" ]; then
+  echo Need to install git.
+  exit 1
+fi
+
+ln -sf "$PWD/gitconfig" "$HOME/.gitconfig"
+
