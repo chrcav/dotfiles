@@ -42,7 +42,6 @@ syntax enable
 filetype plugin on
 
 " Install vim-plug if not already installed
-" (Yes I know about Vim 8 Plugins. They suck.)
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -72,7 +71,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   Plug 'rust-lang/rust.vim'
   Plug 'racer-rust/vim-racer'
   " javascript with tern
-  Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+  "Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
   " ------------------
   " git functionality
@@ -192,8 +191,6 @@ set omnifunc=syntaxcomplete#Complete " enable omni-completion
 " requires gopls
 " $ go get golang.org/x/tools/gopls
 autocmd FileType go setlocal omnifunc=go#complete#Complete
-
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 " tells vim to remember the current line on close and reload.
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
