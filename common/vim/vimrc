@@ -107,6 +107,11 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " ctrlp: file search and open.
   Plug 'ctrlpvim/ctrlp.vim'
 
+  " ----------------
+  " colorschemes
+  " ----------------
+  Plug 'tek256/simple-dark'
+
   call plug#end()
   " golang plugin configurations
   if exists('g:plugs["vim-go"]')
@@ -144,6 +149,10 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
     set statusline+=%{SyntasticStatuslineFlag()}
     set statusline+=%*
     let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_cpp_include_dirs = ['extern/glfw/include']
+    let g:syntastic_c_include_dirs = ['extern/glfw/include', 'extern/stb']
+    let g:syntastic_c_check_header = 1
+    let g:syntastic_cpp_check_header = 1
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
@@ -157,9 +166,27 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
     autocmd FileType javascript,stratos nnoremap <silent> <buffer> gd :TernDef<CR>
     autocmd FileType javascript,stratos nnoremap <silent> <buffer> gr :TernRefs<CR>
   endif
+
+  if exists('g:plugs["simple-dark"]')
+    colorscheme simple-dark
+  endif
 endif
 
+" highlight trailing whitespace
+highlight link ExtraWhitespace Error
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+" rust format call on leave.
 autocmd vimleavepre *.rs !rustfmt %
+
+"function! TrimWhiteSpace()
+"    %s/\s\+$//e
+"endfunction
+"autocmd BufWritePre *.h,*.c :call TrimWhiteSpace()
 
 set omnifunc=syntaxcomplete#Complete " enable omni-completion
 " requires gopls
