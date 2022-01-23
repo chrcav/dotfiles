@@ -3,6 +3,7 @@ export VISUAL=vi
 export EDITOR_PREFIX=vi
 
 export NOTES_DIR=$HOME/repos/github/guitarpie/notes
+export ZET_DIR=$HOME/repos/github/guitarpie/zettlekasten
 export REPOS=$HOME/repos
 
 # \e = \033 using [38;2 for rgb foreground colors. 
