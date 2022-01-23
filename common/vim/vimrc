@@ -9,7 +9,8 @@ set softtabstop=2
 set smartindent
 set smarttab
 
-set textwidth=73
+set textwidth=100
+set colorcolumn=+1
 
 set ruler
 set visualbell
@@ -70,6 +71,8 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " rust-vim:
   Plug 'rust-lang/rust.vim'
   Plug 'racer-rust/vim-racer'
+  " vim-racket
+  Plug 'wlangstroth/vim-racket'
   " javascript with tern
   "Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
