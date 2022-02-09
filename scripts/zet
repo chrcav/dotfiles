@@ -4,7 +4,12 @@ if [ ! $ZET_DIR ]; then
   echo "ZET_DIR not defined"
   exit 1
 fi
+
+if [ -z "$1" ]; then
 newEntry=$(date +%Y%m%d%H%M%S)
+else
+  newEntry=$1
+fi
 echo $newEntry
 if [ ! -d $ZET_DIR ]; then
   echo "ZET_DIR: '$ZET_DIR' doesn't exist"
@@ -15,5 +20,6 @@ mkdir -p $newEntry 2>/dev/null
 cd $newEntry
 if [ ! -e README.md ]; then
   touch README.md
+  echo "# $newEntry" > README.md
 fi
 exec vim + README.md
