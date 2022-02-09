@@ -1,0 +1,25 @@
+#!/bin/bash
+# change to scripts dir
+cd ../
+
+declare -i totalTests=0
+declare -i passing=0
+
+echo '------------------------------------------'
+echo "Testing Bible Refs from file test_biblerefs"
+while IFS= read -r line; do
+  totalTests=$((totalTests+1))
+  mdLink=$(echo $line | ./biblnk)
+  ref=${mdLink%](*}
+  ref=${ref#*[}
+  mdLink=${mdLink##*](}
+  mdLink=${mdLink%)*}
+  echo "$line"
+  echo "Checking if link is valid: $mdLink"
+  curl $mdLink 2>&1 1>/dev/null
+  test $? -eq 0 && test "$ref" == "$line" && echo "Success" && passing=$((passing+1)) || echo "FAILED"
+done < tests/test_biblerefs
+
+echo "-----------------------------------------"
+echo "$passing tests Passing out of $totalTests"
+echo "-----------------------------------------"

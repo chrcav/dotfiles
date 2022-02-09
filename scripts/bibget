@@ -1,0 +1,41 @@
+#!/bin/bash
+
+kjv_id=de4e12af7f28f599-02
+skb_id=fa4317c59f0825e0-01 # Swedish Kärnbibeln
+
+#curl -X GET "https://api.scripture.api.bible/v1/bibles/$kjv_id/books" -H  "accept: application/json" -H  "api-key: $BIBLE_API_KEY"
+
+if [[ "$@" =~ ^([1-2]?[[:space:]]?[[:alpha:][:space:]]+)[[:space:]]([0-9]{1,3}):?([0-9]{1,3})?-?([0-9]{1,3})?[[:space:]]?([[:alpha:]]{3,5})? ]]; then
+  book="${BASH_REMATCH[1]}"
+  chapter="${BASH_REMATCH[2]}"
+  verse1="${BASH_REMATCH[3]}"
+  verse2="${BASH_REMATCH[4]}"
+  ver="${BASH_REMATCH[5]}"
+fi
+book=$(bibabbr $book)
+
+#echo $book
+#echo $chapter
+#echo $verse1
+#echo $verse2
+#echo $ver
+
+passage_id="$book.$chapter" # EXO.1.5-EXO.1.7
+if [[ ! -z "$verse1" ]]; then
+  passage_id="$passage_id.$verse1"
+fi
+if [[ ! -z "$verse2" ]]; then
+  passage_id="$passage_id-$book.$chapter.$verse2"
+fi
+#echo "$passage_id"
+
+bible_id=$kjv_id
+case ${ver,,} in
+  "kjv") bible_id=$kjv_id ;;
+  "skb") bible_id=$skb_id ;;
+esac
+
+json_res=$(curl -X GET "https://api.scripture.api.bible/v1/bibles/$bible_id/passages/$passage_id?content-type=text&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=true&include-verse-spans=false&use-org-id=false" -H  "accept: application/json" -H  "api-key: $BIBLE_API_KEY" 2> /dev/null)
+
+echo $json_res | jq -r '.data | .reference,.content'
+

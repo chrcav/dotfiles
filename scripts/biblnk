@@ -1,0 +1,43 @@
+#!/bin/bash
+# biblnk
+# usage takes Reference through stdin with the format Matthew 10:11 ESV and creates a
+#  bible.com link:
+#  [Matthew 10:11 ESV](https://bible.com/bible/59/Mat.10.11)
+
+kjv=1
+esv=59
+niv=111
+nlt=116
+b2000=154
+sfb15=1223
+nub=916
+
+create_bible_link_from_ref() {
+  if [[ "$@" =~ ^([1-2]?[[:space:]]?[[:alpha:][:space:]]+)[[:space:]]([0-9]{1,3}):?([0-9]{1,3}-?[0-9]{1,3}?)?[[:space:]]?([[:alpha:]0-9]{3,5})? ]]; then
+    book="${BASH_REMATCH[1]}"
+    chapter="${BASH_REMATCH[2]}"
+    verse="${BASH_REMATCH[3]}"
+    ver="${BASH_REMATCH[4]}"
+  fi
+  book=$(bibabbr $book)
+
+  #echo "$book"
+  #echo "$chapter"
+  #echo "$verse"
+  #echo "$ver"
+
+  case ${ver,,} in
+    "b2000") echo "https://bible.com/bible/$b2000/$book.$chapter.$verse" ;;
+    "kjv") echo "https://bible.com/bible/$kjv/$book.$chapter.$verse" ;;
+    "niv") echo "https://bible.com/bible/$niv/$book.$chapter.$verse" ;;
+    "nlt") echo "https://bible.com/bible/$nlt/$book.$chapter.$verse" ;;
+    "nub") echo "https://bible.com/bible/$nub/$book.$chapter.$verse" ;;
+    *) echo "https://bible.com/bible/$esv/$book.$chapter.$verse" ;;
+  esac
+}
+
+while read line; do
+  link=$(create_bible_link_from_ref $line)
+
+  echo "[$line]($link)"
+done
