@@ -12,7 +12,8 @@ fi
 #echo $verses
 #echo $ver
 
-json_res=$(curl -X GET "https://api.esv.org/v3/passage/text/?q=$book+$chapter$verses&include-footnotes=false" -H  "Authorization: Token $ESV_API_KEY" 2> /dev/null)
+json_res=$(curl -X GET "https://api.esv.org/v3/passage/text/?q=${book/ /+}+$chapter$verses&include-passage-references=false&include-footnotes=false" -H  "Authorization: Token $ESV_API_KEY" 2> /dev/null)
 
+echo "$@"
 echo $json_res | jq -r '.passages[]'
 

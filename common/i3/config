@@ -43,6 +43,9 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# lock the lightdm seesion
+bindsym $mod+Shift+Return exec dm-tool lock
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
