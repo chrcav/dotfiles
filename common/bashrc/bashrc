@@ -8,7 +8,7 @@ export REPOS=$HOME/repos
 
 # \e = \033 using [38;2 for rgb foreground colors. 
 # [48;2 for rgb background colors.
-PS1='\[\e[1m\e[38;2;26;115;232m\]\u\[\e[00m\]:\[\e[1m\e[38;2;132;108;183m\]\w\[\e[00m\]\$ '
+PS1='\[\e[1m\e[38;2;26;115;232m\]\u\[\e[00m\]@\[\e[1m\e[38;2;132;108;183m\]\h\[\e[00m\]:\[\e[1m\e[38;2;26;115;232m\]\W\[\e[00m\]\$ '
 
 which go &>/dev/null
 if [ $? -eq 1 ]; then

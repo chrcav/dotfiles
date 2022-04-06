@@ -3,3 +3,5 @@
 	email = 2438957+guitarpie@users.noreply.github.com
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
