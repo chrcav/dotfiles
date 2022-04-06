@@ -21,8 +21,6 @@ fi
 
 if [ -d "$HOME/.deno" ]; then 
   export PATH=$PATH:$HOME/.deno/bin
-else
-  echo "Error deno not installed"
 fi
 
 source /usr/share/bash-completion/bash_completion
@@ -50,6 +48,8 @@ $HOME/repos/github/guitarpie
 export SNIPS_DIR=$HOME/.local/snips
 export GOPATH=$HOME/.local/go
 
-source ~/.keys
+if [ -f "$HOME/.keys" ]; then
+  source ~/.keys
+fi
 
 alias vi=vim

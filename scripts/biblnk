@@ -35,9 +35,33 @@ create_bible_link_from_ref() {
     *) echo "https://bible.com/bible/$esv/$book.$chapter.$verse" ;;
   esac
 }
+create_stepbible_link_from_ref() {
+  if [[ "$@" =~ ^([1-2]?[[:space:]]?[[:alpha:][:space:]]+)[[:space:]]([0-9]{1,3}):?([0-9]{1,3}-?[0-9]{1,3}?)?[[:space:]]?([[:alpha:]0-9]{3,5})? ]]; then
+    book="${BASH_REMATCH[1]}"
+    chapter="${BASH_REMATCH[2]}"
+    verse="${BASH_REMATCH[3]}"
+    ver="${BASH_REMATCH[4]}"
+  fi
+  book=$(bibabbr $book)
+  book=${book/ //}
 
+  #echo "$book"
+  #echo "$chapter"
+  #echo "$verse"
+  #echo "$ver"
+
+  if [ "$ver" = "" ]; then
+    ver=ESV
+  fi
+
+  reference="$book.$chapter"
+  if [ "$verse" != "" ]; then
+    reference="$reference:$verse"
+  fi
+  echo "https://www.stepbible.org/?q=reference=$reference|version=$ver&options=VNHUG"
+}
 while read line; do
-  link=$(create_bible_link_from_ref $line)
+  link=$(create_stepbible_link_from_ref $line)
 
   echo "[$line]($link)"
 done
