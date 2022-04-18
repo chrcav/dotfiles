@@ -1,3 +1,8 @@
+set encoding=utf-8
+
+set nobackup
+set nowritebackup
+set noundofile
 
 set number
 
@@ -234,6 +239,9 @@ autocmd FileType go setlocal omnifunc=go#complete#Complete
 
 " tells vim to remember the current line on close and reload.
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" filetype for crux ports
+au BufNewFile,BufRead *Pkgfile set filetype=sh
 
 set pastetoggle=<F3>
 
