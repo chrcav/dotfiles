@@ -72,8 +72,6 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   Plug 'racer-rust/vim-racer'
   " vim-racket
   Plug 'wlangstroth/vim-racket'
-  " javascript with tern
-  "Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 
   " ------------------
   " git functionality
@@ -84,18 +82,12 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " ------------------
   " completion engines
   " ------------------
-  "  YCM: more complete package performs omnifunc and syntastic
-  "  functionality
-  "Plug 'Valloric/YouCompleteMe'
-  " deoplete is too dependent on python.
   " mucomplete minimalist completion
   Plug 'lifepillar/vim-mucomplete'
 
   " ------------------
   " syntax checking
   " ------------------
-  "  YCM: more complete package performs deoplete and syntastic
-  "  functionality
   " syntastic: uses native linters/checkers
   " Plug 'vim-syntastic/syntastic'
 
@@ -119,6 +111,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   Plug 'tek256/simple-dark'
 
   call plug#end()
+
   " golang plugin configurations
   if exists('g:plugs["vim-go"]')
     let g:go_fmt_command = 'goimports' " autoupdate import
@@ -164,15 +157,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
     let g:syntastic_check_on_wq = 0
   endif
 
-  " tern settings
-  if exists('g:plugs["tern_for_vim"]')
-    let g:tern_show_argument_hints = 'on_hold'
-    let g:tern_show_signature_in_pum = 1
-    autocmd FileType javascript,stratos setlocal omnifunc=tern#Complete
-    autocmd FileType javascript,stratos nnoremap <silent> <buffer> gd :TernDef<CR>
-    autocmd FileType javascript,stratos nnoremap <silent> <buffer> gr :TernRefs<CR>
-  endif
-
+  " vim-lsp plugin configuration
   if exists('g:plugs["vim-lsp"]')
     function! s:on_lsp_buffer_enabled() abort
       setlocal omnifunc=lsp#complete
@@ -188,12 +173,14 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
       nmap <buffer> [g <plug>(lsp-previous-diagnostic)
       nmap <buffer> ]g <plug>(lsp-next-diagnostic)
       nmap <buffer> K <plug>(lsp-hover)
+      nnoremap <buffer> [] :LspDocumentDiagnostic<CR>
       nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
       nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
       let g:lsp_format_sync_timeout = 1000
       autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 
+      let g:lsp_diagnostics_echo_cursor = 1
       " refer to doc to add more commands
     endfunction
 
@@ -202,12 +189,13 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
       " call s:on_lsp_buffer_enabled only for languages that has the server registered.
       autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
     augroup END
+
     if executable('clangd')
       augroup lsp_clangd
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
                     \ 'name': 'clangd',
-                    \ 'cmd': {server_info->['clangd']},
+                    \ 'cmd': {server_info->['clangd', '-background-index']},
                     \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
                     \ })
         autocmd FileType c setlocal omnifunc=lsp#complete
