@@ -1,1 +1,11 @@
-exec i3
+
+session=${1:-spectrwm}
+
+case $session in
+    dwm          ) baraction.sh 2>1 1>/dev/null & exec dwm;;
+    i3|i3wm      ) exec i3;;
+    spectrwm     ) exec spectrwm;;
+    # No known session, try to run it as command
+    *            ) exec $1;;
+esac
+

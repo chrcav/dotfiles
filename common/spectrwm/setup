@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$(which spectrwm)" ]; then
+  echo Need to install spectrwm.
+  exit 1
+fi
+
+mkdir ~/.config/ 2>/dev/null
+unlink "$HOME/.config/spectrwm" 2>/dev/null
+ln -sf "$PWD" "$HOME/.config/spectrwm"
+
