@@ -58,7 +58,7 @@ create_stepbible_link_from_ref() {
   if [ "$verse" != "" ]; then
     reference="$reference:$verse"
   fi
-  echo "https://www.stepbible.org/?q=reference=$reference|version=$ver&options=VNHUG"
+  echo "https://www.stepbible.org/?q=reference=$reference%7Cversion=$ver"
 }
 while read line; do
   link=$(create_stepbible_link_from_ref $line)
