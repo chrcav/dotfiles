@@ -37,7 +37,8 @@ if [ ! -d "~/.local/go" ]; then
   mkdir -p ~/.local/go
 fi
 
-export PATH=~/.local/bin/scripts:\
+export PATH=/usr/sbin/:\
+~/.local/bin/scripts:\
 ~/.local/bin:\
 ~/.cargo/bin/:\
 ~/.local/go/bin/:\

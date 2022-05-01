@@ -3,6 +3,8 @@ set encoding=utf-8
 set nobackup
 set nowritebackup
 set noundofile
+set mouse=
+set ttymouse=
 
 set number
 
@@ -32,7 +34,7 @@ set viminfo='20,<1000,s1000 " prevents truncated yanks, deletes, etc.
 
 set scrolloff=999
 
-set spell spelllang=en_us
+"set spell spelllang=en_us
 
 set formatoptions-=t   " don't auto-wrap text using text width
 set formatoptions+=c   " autowrap comments using textwidth with leader
