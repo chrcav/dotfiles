@@ -16,7 +16,7 @@ while :; do
 	MTOTMB=$(($MTOT / 1024))
 	MEM_STR="MemAvail:${MAVAILPT}% MemUsed:${MUSEDPT}% MemTot:${MTOTMB}"
 
-  MPCSTAT=$(mpc status 2>/dev/null)
+  MPCSTAT=$(mpc status 2>/dev/null | head -n 2)
   MPCSTAT=${MPCSTAT//$'\n'/;  }
   MPDSTR="$MPCSTAT"
 
