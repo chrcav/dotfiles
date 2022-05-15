@@ -1,5 +1,5 @@
 
-session=${1:-spectrwm}
+session=${1:-dwm}
 
 case $session in
     dwm          ) baraction.sh 2>1 1>/dev/null & exec dwm;;
