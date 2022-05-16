@@ -2,8 +2,8 @@ export EDITOR=vi
 export VISUAL=vi
 export EDITOR_PREFIX=vi
 
-export NOTES_DIR=$HOME/repos/github/guitarpie/notes
-export ZET_DIR=$HOME/repos/github/guitarpie/zettelkasten
+export NOTES_DIR=$HOME/repos/github/chrcav/notes
+export ZET_DIR=$HOME/repos/github/chrcav/zettelkasten
 export REPOS=$HOME/repos
 
 # \e = \033 using [38;2 for rgb foreground colors. 
@@ -45,7 +45,8 @@ export PATH=/usr/sbin/:\
 $PATH
 export CDPATH=./:\
 $HOME/repos/gitlab/guitarpie:\
-$HOME/repos/github/guitarpie
+$HOME/repos/github/chrcav
+
 export SNIPS_DIR=$HOME/.local/snips
 export GOPATH=$HOME/.local/go
 
