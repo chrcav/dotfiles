@@ -18,10 +18,13 @@ while :; do
 
   MPCSTAT=$(mpc status 2>/dev/null | head -n 2)
   MPCSTAT=${MPCSTAT//$'\n'/;  }
+  if [[ "$MPCSTAT" =~ "paused" ]]; then
+    MPCSTAT=
+  fi
   MPDSTR="$MPCSTAT"
 
   TIMESTR=$(date '+%a %Y-%b-%d %H:%M:%S %Z')
-	echo -e "$TIMESTR $TEMPSTR $MEMSTR        $MPDSTR"
+  echo -e "$TIMESTR $TEMPSTR $MEMSTR $MPDSTR"
   xsetroot -name "$TIMESTR $TEMPSTR $MEMSTR $MPDSTR"
 
 	sleep $SLEEP_SEC
