@@ -1,0 +1,140 @@
+#!/bin/bash
+
+curtodo() {
+  todoid_comp $@
+  todo_id=$1
+  if [[ -z $todo_id ]]; then
+    if [[ ! -f $HOME/.todo ]]; then
+      echo "No current todo set"
+      echo "Usage: $0 <todo id> to set new cur"
+      echo "       $0 to print current todo item"
+      exit 1
+    fi
+    todo_id=$(cat $HOME/.todo)
+  fi
+
+
+  if [[ ! -e "$TODO_DIR/$todo_id" ]]; then
+    echo "invalid todo id '$todo_id'"
+    exit 1
+  fi
+  echo "$todo_id" > $HOME/.todo
+  head -n 1 "$TODO_DIR/$todo_id/README.md"
+}
+
+edtodo() {
+  todoid_comp $@
+  if [[ -z $1 ]]; then
+    echo "usage: $0 <todo_id>"
+    exit 1
+  fi
+
+  todo_id=$1
+
+  if [[ ! -e "$TODO_DIR/$todo_id" ]]; then
+    echo "invalid todo id '$todo_id'"
+    exit 1
+  fi
+  vim "$TODO_DIR/$todo_id/README.md"
+}
+
+lstodo() {
+  if [ ! $(ls -A $TODO_DIR) ]; then
+    echo "no todo items defined"
+    exit 1
+  fi
+  for file in $TODO_DIR/* ; do
+    if [ ! -z $cur_todo ] && [[ $file =~ $cur_todo ]]; then
+      echo -ne $"\e[38;2;0;255;0m"
+    fi
+    head -n 1 $file/README.md
+    echo -ne $"\e[00m"
+  done
+}
+
+rmtodobyid() {
+  todo_id=$1
+
+  if [[ ! -e "$TODO_DIR/$todo_id" ]]; then
+    echo "invalid todo id '$todo_id'"
+    return
+  fi
+  rm -r "$TODO_DIR/$todo_id"
+}
+
+rmtodo() {
+  todoid_comp $@
+  if [[ -z $1 ]]; then
+    echo "usage: $0 <todo_id>"
+    exit 1
+  fi
+
+  for todo in $@; do
+    echo "Are you sure you want to delete:"
+    head -n 1 "$TODO_DIR/$todo/README.md"
+    echo -n "(y/n)"
+    read ans
+    if [[ $ans =~ "y" ]]; then
+      rmtodobyid $todo
+      if [ ! -z $cur_todo ] && [ $cur_todo = $todo ]; then
+        echo -n "" > $HOME/.todo
+      fi
+    fi
+  done
+}
+
+showtodo() {
+  todoid_comp $@
+  usage() {
+    echo "usage: $0 <todo_id>"
+  }
+  if [[ -z $1 ]] || [[ $1 == "help" ]]; then
+    usage
+    exit 1
+  fi
+
+  todo_id=$1
+
+  if [[ ! -e "$TODO_DIR/$todo_id" ]]; then
+    echo "invalid todo id '$todo_id'"
+    exit 1
+  fi
+  more "$TODO_DIR/$todo_id/README.md"
+}
+
+todoid_comp() {
+  if [[ ! -z "$COMP_LINE" ]]; then
+    compWord=${COMP_LINE#* }
+    compgen -W "$(ls $TODO_DIR) help" -X ${!#} "$compWord"
+    exit
+  fi
+}
+
+if [ ! $TODO_DIR ] || [ ! -d $TODO_DIR ] ; then
+  echo "TODO_DIR not defined or doesn't exist"
+  exit 1
+fi
+if [ -f $HOME/.todo ]; then
+  cur_todo=$(cat $HOME/.todo)
+fi
+
+cmd=$(basename $0)
+case $cmd in
+  'todo') ;;
+  *) $cmd $@
+    exit 0;;
+esac
+
+newEntry=$(date +%Y%m%d%H%M%S)
+echo $newEntry
+cd $TODO_DIR/
+mkdir -p $newEntry 2>/dev/null
+cd $newEntry
+if [ ! -e README.md ]; then
+  touch README.md
+  echo "# $newEntry $@"  > README.md
+fi
+echo "" >> README.md
+while read line; do
+  echo "$line" >> README.md
+done
