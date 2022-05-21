@@ -1,10 +1,18 @@
 
-#export XDG_RUNTIME_DIR=$HOME/.local/run
-#pipewire &
-#pipewire-pulse &
-#pipewire-media-session &
-session=${1:-dwm}
+if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"]; then
+  eval `dbus-lauch --sh-syntax --exit-with-session`
+fi
 
+unset XDG_RUNTIME_DIR
+export XDG_RUNTIME_DIR=$HOME/.local/run
+mkdir $XDG_RUNTIME_DIR
+
+pipewire &
+pipewire-pulse &
+pipewire-media-session &
+#pulseaudio -D
+
+session=${1:-dwm}
 case $session in
     dwm          ) baraction.sh 2>1 1>/dev/null & exec dbus-run-session -- dwm;;
     i3|i3wm      ) exec dbus-run-session -- i3;;
