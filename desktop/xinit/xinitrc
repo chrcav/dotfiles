@@ -1,8 +1,4 @@
 
-export XDG_RUNTIME_DIR=$HOME/.local/run
-pipewire &
-pipewire-pulse &
-pipewire-media-session &
 session=${1:-dwm}
 
 case $session in
