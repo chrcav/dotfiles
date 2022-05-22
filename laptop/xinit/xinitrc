@@ -10,6 +10,7 @@ mkdir $XDG_RUNTIME_DIR
 pipewire &
 pipewire-pulse &
 pipewire-media-session &
+pipewire -c ~/.config/pipewire/input-filter-chain.conf &
 #pulseaudio -D
 
 session=${1:-dwm}
