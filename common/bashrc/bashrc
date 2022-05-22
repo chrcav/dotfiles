@@ -44,7 +44,7 @@ export PATH=/usr/sbin/:\
 ~/.local/go/bin/:\
 $PATH
 export CDPATH=./:\
-$HOME/repos/gitlab/guitarpie:\
+$HOME/repos/gitlab/chrcav:\
 $HOME/repos/github/chrcav
 
 export SNIPS_DIR=$HOME/.local/snips
