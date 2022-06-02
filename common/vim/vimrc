@@ -197,6 +197,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 " filetype for crux ports
 au BufNewFile,BufRead *Pkgfile set filetype=sh
+" don't autowrap comments for crux port Pkgfile
+au BufNewFile,BufRead *Pkgfile set formatoptions-=c
 
 set pastetoggle=<F3>
 
