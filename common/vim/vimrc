@@ -3,6 +3,7 @@ set encoding=utf-8
 set nobackup
 set nowritebackup
 set noundofile
+
 set mouse=
 set ttymouse=
 
@@ -175,6 +176,10 @@ autocmd BufWinLeave * call clearmatches()
 
 if executable('deno')
   autocmd vimleavepre *.ts !deno fmt %
+endif
+
+if executable('clang-format')
+  "autocmd vimleavepre *.h,*.c !clang-format -i --style=Mozilla %
 endif
 
 " rust format call on leave.

@@ -27,21 +27,21 @@ source /usr/share/bash-completion/bash_completion
 
 set -o vi
 
-if [ ! -d "~/.local/bin" ]; then
-  mkdir -p ~/.local/bin
+if [ ! -d "$HOME/.local/bin" ]; then
+  mkdir -p $HOME/.local/bin
 fi
-if [ ! -d "~/.local/snips" ]; then
-  mkdir -p ~/.local/snips
+if [ ! -d "$HOME/.local/snips" ]; then
+  mkdir -p $HOME/.local/snips
 fi
-if [ ! -d "~/.local/go" ]; then
-  mkdir -p ~/.local/go
+if [ ! -d "$HOME/.local/go" ]; then
+  mkdir -p $HOME/.local/go
 fi
 
-export PATH=/usr/sbin/:\
-~/.local/bin/scripts:\
-~/.local/bin:\
-~/.cargo/bin/:\
-~/.local/go/bin/:\
+export PATH=$HOME/.local/bin:\
+$HOME/.local/bin/scripts:\
+$HOME/.cargo/bin/:\
+$HOME/.local/go/bin/:\
+/usr/sbin/:\
 $PATH
 export CDPATH=./:\
 $HOME/repos/gitlab/chrcav:\
@@ -52,7 +52,7 @@ export TODO_DIR=$HOME/.local/todo
 export GOPATH=$HOME/.local/go
 
 if [ -f "$HOME/.keys" ]; then
-  source ~/.keys
+  source $HOME/.keys
 fi
 
 alias vi=vim
