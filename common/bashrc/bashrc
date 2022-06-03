@@ -6,21 +6,28 @@ export NOTES_DIR=$HOME/repos/github/chrcav/notes
 export ZET_DIR=$HOME/repos/github/chrcav/zettelkasten
 export REPOS=$HOME/repos
 
-# \e = \033 using [38;2 for rgb foreground colors. 
+# \e = \033 using [38;2 for rgb foreground colors.
 # [48;2 for rgb background colors.
 PS1='\[\e[1m\e[38;2;26;115;232m\]\u\[\e[00m\]@\[\e[1m\e[38;2;132;108;183m\]\h\[\e[00m\]:\[\e[1m\e[38;2;26;115;232m\]\W\[\e[00m\]\$ '
 
 which go &>/dev/null
 if [ $? -eq 1 ]; then
-  if [ -d "/usr/local/go" ]; then 
+  if [ -d "/usr/local/go" ]; then
     export PATH=$PATH:/usr/local/go/bin
   else
     echo "Error Go Lang not installed"
   fi
 fi
 
-if [ -d "$HOME/.deno" ]; then 
+if [ -d "$HOME/.deno" ]; then
   export PATH=$PATH:$HOME/.deno/bin
+fi
+
+if [ -d "$HOME/.cabal" ]; then
+  export PATH=$PATH:$HOME/.cabal/bin
+fi
+if [ -d "$HOME/.ghcup" ]; then
+  export PATH=$PATH:$HOME/.ghcup/bin
 fi
 
 source /usr/share/bash-completion/bash_completion
