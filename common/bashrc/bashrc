@@ -6,60 +6,59 @@ export NOTES_DIR=$HOME/repos/github/chrcav/notes
 export ZET_DIR=$HOME/repos/github/chrcav/zettelkasten
 export REPOS=$HOME/repos
 
+source /usr/share/bash-completion/bash_completion
+if [ -f "$HOME/.keys" ]; then
+  source "$HOME/.keys"
+fi
+
+set -o vi
+
 # \e = \033 using [38;2 for rgb foreground colors.
 # [48;2 for rgb background colors.
 PS1='\[\e[1m\e[38;2;26;115;232m\]\u\[\e[00m\]@\[\e[1m\e[38;2;132;108;183m\]\h\[\e[00m\]:\[\e[1m\e[38;2;26;115;232m\]\W\[\e[00m\]\$ '
 
-which go &>/dev/null
-if [ $? -eq 1 ]; then
-  if [ -d "/usr/local/go" ]; then
-    export PATH=$PATH:/usr/local/go/bin
-  else
-    echo "Error Go Lang not installed"
-  fi
-fi
-
-if [ -d "$HOME/.deno" ]; then
-  export PATH=$PATH:$HOME/.deno/bin
-fi
-
-if [ -d "$HOME/.cabal" ]; then
-  export PATH=$PATH:$HOME/.cabal/bin
-fi
-if [ -d "$HOME/.ghcup" ]; then
-  export PATH=$PATH:$HOME/.ghcup/bin
-fi
-
-source /usr/share/bash-completion/bash_completion
-
-set -o vi
 
 if [ ! -d "$HOME/.local/bin" ]; then
-  mkdir -p $HOME/.local/bin
+  mkdir -p "$HOME/.local/bin"
 fi
-if [ ! -d "$HOME/.local/snips" ]; then
-  mkdir -p $HOME/.local/snips
+
+# Haskell related paths
+export GHCUP_USE_XDG_DIRS=yes
+export CABAL_DIR=$HOME/.local/cabal/
+export CABAL_CONFIG=$HOME/.config/cabal/config
+if [ ! -d "$CABAL_DIR" ]; then
+  mkdir -p "$CABAL_DIR"
 fi
-if [ ! -d "$HOME/.local/go" ]; then
-  mkdir -p $HOME/.local/go
+
+export CARGO_HOME=$HOME/.local/cargo
+if [ ! -d "$CARGO_HOME" ]; then
+  mkdir -p "$CARGO_HOME"
 fi
+
+# Golang related paths
+export GOPATH=$HOME/.local/go
+if [ ! -d "$GOPATH" ]; then
+  mkdir -p "$GOPATH"
+fi
+
+export SNIPS_DIR=$HOME/.local/snips
+if [ ! -d "$SNIPS_DIR" ]; then
+  mkdir -p "$SNIPS_DIR"
+fi
+
+export TODO_DIR=$HOME/.local/todo
 
 export PATH=$HOME/.local/bin:\
 $HOME/.local/bin/scripts:\
-$HOME/.cargo/bin/:\
-$HOME/.local/go/bin/:\
+$CARGO_HOME/bin/:\
+$GOPATH/bin/:\
+$CABAL_DIR/bin:\
 /usr/sbin/:\
 $PATH
+
 export CDPATH=./:\
 $HOME/repos/gitlab/chrcav:\
 $HOME/repos/github/chrcav
 
-export SNIPS_DIR=$HOME/.local/snips
-export TODO_DIR=$HOME/.local/todo
-export GOPATH=$HOME/.local/go
-
-if [ -f "$HOME/.keys" ]; then
-  source $HOME/.keys
-fi
 
 alias vi=vim
