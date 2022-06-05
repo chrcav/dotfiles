@@ -1,7 +1,7 @@
 #!/bin/bash
 
 curtodo() {
-  todoid_comp $@
+  todoid_comp "$@"
   todo_id=$1
   if [[ -z $todo_id ]]; then
     if [[ ! -f $HOME/.todo ]]; then
@@ -10,7 +10,7 @@ curtodo() {
       echo "       $0 to print current todo item"
       exit 1
     fi
-    todo_id=$(cat $HOME/.todo)
+    todo_id=$(cat "$HOME/.todo")
   fi
 
 
@@ -18,12 +18,12 @@ curtodo() {
     echo "invalid todo id '$todo_id'"
     exit 1
   fi
-  echo "$todo_id" > $HOME/.todo
+  echo "$todo_id" > "$HOME/.todo"
   head -n 1 "$TODO_DIR/$todo_id/README.md"
 }
 
 edtodo() {
-  todoid_comp $@
+  todoid_comp "$@"
   if [[ -z $1 ]]; then
     echo "usage: $0 <todo_id>"
     exit 1
@@ -36,19 +36,24 @@ edtodo() {
     exit 1
   fi
   vim "$TODO_DIR/$todo_id/README.md"
+  todoindex
 }
 
 lstodo() {
-  if [ ! $(ls -A $TODO_DIR) ]; then
+  local todo_contents
+  todo_contents=$(ls -A "$TODO_DIR" | head -n 1)
+  if [ ! "$todo_contents" ]; then
     echo "no todo items defined"
     exit 1
   fi
-  for file in $TODO_DIR/* ; do
-    if [ ! -z $cur_todo ] && [[ $file =~ $cur_todo ]]; then
-      echo -ne $"\e[38;2;0;255;0m"
+  for file in "$TODO_DIR"/* ; do
+    if [ -d "$file" ]; then
+      if [ -n "$cur_todo" ] && [[ $file =~ $cur_todo ]]; then
+        echo -ne $"\e[38;2;0;255;0m"
+      fi
+      head -n 1 "$file/README.md"
+      echo -ne $"\e[00m"
     fi
-    head -n 1 $file/README.md
-    echo -ne $"\e[00m"
   done
 }
 
@@ -59,32 +64,33 @@ rmtodobyid() {
     echo "invalid todo id '$todo_id'"
     return
   fi
-  rm -r "$TODO_DIR/$todo_id"
+  rm -r "${TODO_DIR:?}/$todo_id"
 }
 
 rmtodo() {
-  todoid_comp $@
+  todoid_comp "$@"
   if [[ -z $1 ]]; then
     echo "usage: $0 <todo_id>"
     exit 1
   fi
 
-  for todo in $@; do
+  for todo in "$@"; do
     echo "Are you sure you want to delete:"
     head -n 1 "$TODO_DIR/$todo/README.md"
     echo -n "(y/n)"
-    read ans
+    read -r ans
     if [[ $ans =~ "y" ]]; then
-      rmtodobyid $todo
-      if [ ! -z $cur_todo ] && [ $cur_todo = $todo ]; then
-        echo -n "" > $HOME/.todo
+      rmtodobyid "$todo"
+      if [ -n "$cur_todo" ] && [ "$cur_todo" = "$todo" ]; then
+        echo -n "" > "$HOME/.todo"
       fi
     fi
   done
+  todoindex
 }
 
 showtodo() {
-  todoid_comp $@
+  todoid_comp "$@"
   usage() {
     echo "usage: $0 <todo_id>"
   }
@@ -103,38 +109,52 @@ showtodo() {
 }
 
 todoid_comp() {
-  if [[ ! -z "$COMP_LINE" ]]; then
+  if [[ -n "$COMP_LINE" ]]; then
     compWord=${COMP_LINE#* }
-    compgen -W "$(ls $TODO_DIR) help" -X ${!#} "$compWord"
+    compgen -W "$(ls "$TODO_DIR") help" -X ${!#} "$compWord"
     exit
   fi
 }
 
-if [ ! $TODO_DIR ] || [ ! -d $TODO_DIR ] ; then
+todoindex() {
+  touch "$TODO_DIR/README.md"
+  printf "# TODO Index\n\n" > "$TODO_DIR/README.md"
+
+  for d in "$TODO_DIR"/*; do
+    if [ -d "$d" ]; then
+      local todo_line
+      local todo_dir
+      todo_line=$(head -n 1 "$d/README.md")
+      todo_dir=$(basename "$d")
+      echo "* [$todo_line]($todo_dir)" >> "$TODO_DIR/README.md"
+    fi
+  done
+}
+
+if [ -z "$TODO_DIR" ] || [ ! -d "$TODO_DIR" ] ; then
   echo "TODO_DIR not defined or doesn't exist"
   exit 1
 fi
-if [ -f $HOME/.todo ]; then
-  cur_todo=$(cat $HOME/.todo)
+if [ -f "$HOME/.todo" ]; then
+  cur_todo=$(cat "$HOME/.todo")
 fi
 
-cmd=$(basename $0)
+cmd=$(basename "$0")
 case $cmd in
   'todo') ;;
-  *) $cmd $@
+  *) $cmd "$@"
     exit 0;;
 esac
 
 newEntry=$(date +%Y%m%d%H%M%S)
-echo $newEntry
-cd $TODO_DIR/
-mkdir -p $newEntry 2>/dev/null
-cd $newEntry
-if [ ! -e README.md ]; then
+echo "$newEntry"
+mkdir -p "$TODO_DIR/$newEntry" 2>/dev/null
+if [ ! -e "$TODO_DIR/$newEntry/README.md" ]; then
   touch README.md
-  echo "# $newEntry $@"  > README.md
+  echo "# $newEntry $*"  > README.md
 fi
 echo "" >> README.md
-while read line; do
+while read -r line; do
   echo "$line" >> README.md
 done
+todoindex

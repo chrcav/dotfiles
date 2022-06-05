@@ -7,6 +7,7 @@ export ZET_DIR=$HOME/repos/github/chrcav/zettelkasten
 export REPOS=$HOME/repos
 
 source /usr/share/bash-completion/bash_completion
+source "$HOME/.bash_completion"
 if [ -f "$HOME/.keys" ]; then
   source "$HOME/.keys"
 fi

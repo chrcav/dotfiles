@@ -1,0 +1,4 @@
+complete -C curtodo curtodo
+complete -C edtodo edtodo
+complete -C showtodo showtodo
+complete -C rmtodo rmtodo
