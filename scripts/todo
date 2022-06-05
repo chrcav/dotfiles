@@ -146,15 +146,16 @@ case $cmd in
     exit 0;;
 esac
 
-newEntry=$(date +%Y%m%d%H%M%S)
-echo "$newEntry"
-mkdir -p "$TODO_DIR/$newEntry" 2>/dev/null
-if [ ! -e "$TODO_DIR/$newEntry/README.md" ]; then
-  touch README.md
-  echo "# $newEntry $*"  > README.md
+new_id=$(date +%Y%m%d%H%M%S)
+new_entry="$TODO_DIR/$new_id"
+echo "$new_id"
+mkdir -p "$new_entry" 2>/dev/null
+if [ ! -e "$new_entry/README.md" ]; then
+  touch "$new_entry/README.md"
+  echo "# $new_id $*"  > "$new_entry/README.md"
 fi
-echo "" >> README.md
+echo "" >> "$new_entry/README.md"
 while read -r line; do
-  echo "$line" >> README.md
+  echo "$line" >> "$new_entry/README.md"
 done
 todoindex
