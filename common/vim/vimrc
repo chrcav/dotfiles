@@ -99,6 +99,9 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " syntastic: uses native linters/checkers
   Plug 'vim-syntastic/syntastic'
 
+  " indentation detection
+  Plug 'tpope/vim-sleuth'
+
   " ------------------
   " file/folder hierarchy plugins
   " ------------------
@@ -180,7 +183,7 @@ if executable('deno')
 endif
 
 if executable('clang-format')
-  "autocmd vimleavepre *.h,*.c !clang-format -i --style=Mozilla %
+  "autocmd vimleavepre *.h,*.c !clang-format -i --style=file %
 endif
 
 " rust format call on leave.
