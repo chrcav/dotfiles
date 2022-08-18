@@ -24,8 +24,8 @@ while :; do
   MPDSTR="$MPCSTAT"
 
   TIMESTR=$(date '+%a %Y-%b-%d %H:%M:%S %Z')
-  echo -e "$TIMESTR $TEMPSTR $MEMSTR $MPDSTR"
-  xsetroot -name "$TIMESTR $TEMPSTR $MEMSTR $MPDSTR"
+  echo -e "$MPDSTR $TIMESTR $TEMPSTR $MEMSTR"
+  xsetroot -name "$MPDSTR $TIMESTR $TEMPSTR $MEMSTR"
 
 	sleep $SLEEP_SEC
 done
