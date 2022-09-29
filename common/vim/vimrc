@@ -57,7 +57,7 @@ set scrolloff=999
 "set spell spelllang=en_us
 
 set formatoptions-=t   " don't auto-wrap text using text width
-set formatoptions+=c   " autowrap comments using textwidth with leader
+"set formatoptions+=c   " autowrap comments using textwidth with leader
 set formatoptions-=r   " don't auto-insert comment leader on enter in insert
 
 " stop complaining when switching buffers with changes
