@@ -1,0 +1,27 @@
+#!/bin/sh
+
+iso=$1
+CHROOT="/devel/$(basename -s .iso $iso)"
+
+echo $CHROOT
+
+mkdir -p $CHROOT/var/lib/pkg
+touch $CHROOT/var/lib/pkg/db
+
+mount -o loop "$iso" /mnt
+cd /mnt/crux
+for p in core/* ; do pkgadd -r $CHROOT $p; done
+
+cp /etc/resolv.conf $CHROOT/etc/
+cp /etc/ports/cc.httpup $CHROOT/etc/ports/
+cp /etc/ports/cc.pub $CHROOT/etc/ports/
+#cp -r $PORTS_DIR $CHROOT/usr/ports/
+mv $CHROOT/etc/ports/contrib.rsync.inactive $CHROOT/etc/ports/contrib.rsync
+echo "prtdir /usr/ports/contrib" >> $CHROOT/etc/prt-get.conf
+echo "prtdir /usr/ports/cc" >> $CHROOT/etc/prt-get.conf
+echo "prtdir /usr/ports/$(basename $PORTS_DIR)" >> $CHROOT/etc/prt-get.conf
+mount -t proc proc $CHROOT/proc
+mount --bind /dev $CHROOT/dev
+mount --bind /sys $CHROOT/sys
+PS1="(chroot) $PS1" chroot $CHROOT /bin/bash
+

@@ -7,6 +7,9 @@ unset XDG_RUNTIME_DIR
 export XDG_RUNTIME_DIR=$HOME/.local/run
 mkdir $XDG_RUNTIME_DIR
 
+unset XDG_SESSION_TYPE
+export XDG_SESSION_TYPE=tty
+
 pipewire &
 pipewire-pulse &
 pipewire-media-session &

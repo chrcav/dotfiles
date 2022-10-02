@@ -1,0 +1,4 @@
+#!/bin/sh
+
+
+prt-get sysup --install-scripts --log > /tmp/sysup-$(date +%Y%m%d%H%M%S).log
