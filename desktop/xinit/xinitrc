@@ -2,7 +2,7 @@
 session=${1:-dwm}
 
 case $session in
-    dwm          ) baraction.sh 2>1 1>/dev/null & exec dbus-run-session -- dwm;;
+    dwm          ) baraction.sh 1>/dev/null 2>&1 & exec dbus-run-session -- dwm;;
     i3|i3wm      ) exec dbus-run-session -- i3;;
     spectrwm     ) exec dbus-run-session -- spectrwm;;
     # No known session, try to run it as command
