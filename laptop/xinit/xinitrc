@@ -1,10 +1,10 @@
 
-if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"]; then
-  eval `dbus-lauch --sh-syntax --exit-with-session`
+if [ which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+  eval `dbus-launch --sh-syntax --exit-with-session`
 fi
 
 unset XDG_RUNTIME_DIR
-export XDG_RUNTIME_DIR=$HOME/.local/run
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
 mkdir $XDG_RUNTIME_DIR
 
 unset XDG_SESSION_TYPE
