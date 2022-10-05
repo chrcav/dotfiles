@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pandoc -H *.tex --to=pdf "${1:-README.md}" --out="$(basename $PWD).pdf"
+xdg-open "$(basename $PWD).pdf"
