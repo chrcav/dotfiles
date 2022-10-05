@@ -1,0 +1,8 @@
+#!/bin/sh
+
+curl -O https://beta.quicklisp.org/quicklisp.lisp.asc
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+gpg --verify quicklisp.lisp.asc quicklisp.lisp
+sbcl --load quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(ql:add-to-init-file)'
+
+rm quicklisp.lisp*
