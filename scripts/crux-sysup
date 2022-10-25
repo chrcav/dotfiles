@@ -1,4 +1,7 @@
 #!/bin/sh
 
+logfile=/tmp/sysup.log.$(date +%Y%m%d%H%M%S)
 
-prt-get sysup --install-scripts --log > /tmp/sysup-$(date +%Y%m%d%H%M%S).log
+prt-get sysup --install-scripts --log > /tmp/sysup.log
+
+mv /tmp/sysup.log $logfile
