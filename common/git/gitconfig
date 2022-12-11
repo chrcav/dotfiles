@@ -1,7 +1,10 @@
 [user]
-	name = Chris Cavanaugh
-	email = 2438957+guitarpie@users.noreply.github.com
+	name = Christopher Cavanaugh
+	email = christopher@chrcav.dev
+	signingkey = 975C8D89F1208AB8
 [init]
 	defaultBranch = main
 [pull]
 	rebase = true
+[commit]
+	gpgsign = true
