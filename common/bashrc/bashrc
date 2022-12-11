@@ -1,6 +1,7 @@
 export EDITOR=vim
 export VISUAL=vim
 export EDITOR_PREFIX=vim
+export GPG_TTY=$(tty)
 
 export NOTES_DIR=$HOME/repos/github/chrcav/notes
 export ZET_DIR=$HOME/repos/github/chrcav/zettelkasten

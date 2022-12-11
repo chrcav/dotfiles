@@ -87,6 +87,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " vim pandoc syntax simple: adds on vim-pandoc
   Plug 'https://gitlab.com/rwxrob/vim-pandoc-syntax-simple'
 
+
   " ------------------
   " language support plugins
   " ------------------
@@ -188,6 +189,10 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
 
   if exists('g:plugs["simple-dark"]')
     colorscheme simple-dark
+  endif
+
+  if exists('g:plugs["vim-pandoc"]')
+    let g:pandoc#modules#disabled = ["folding"]
   endif
 endif
 

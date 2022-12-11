@@ -16,16 +16,16 @@ while :; do
 	MTOTMB=$(($MTOT / 1024))
 	MEMSTR="MemAvail:${MAVAILPT}% MemUsed:${MUSEDPT}% MemTot:${MTOTMB}"
 
-  MPCSTAT=$(mpc status 2>/dev/null | head -n 2)
-  MPCSTAT=${MPCSTAT//$'\n'/;  }
-  if [[ "$MPCSTAT" =~ "paused" ]]; then
-    MPCSTAT=
-  fi
-  MPDSTR="$MPCSTAT"
+	MPCSTAT=$(mpc status 2>/dev/null | head -n 2)
+	MPCSTAT=${MPCSTAT//$'\n'/;  }
+	if [[ "$MPCSTAT" =~ "paused" ]]; then
+		MPCSTAT=
+	fi
+	MPDSTR="$MPCSTAT"
 
-  TIMESTR=$(date '+%a %Y-%b-%d %H:%M:%S %Z')
-  echo -e "$MPDSTR $TIMESTR $TEMPSTR $MEMSTR"
-  xsetroot -name "$MPDSTR $TIMESTR $TEMPSTR $MEMSTR"
+	TIMESTR=$(date '+%a %Y-%b-%d %H:%M:%S %Z')
+	echo -e "$MPDSTR $TIMESTR $TEMPSTR $MEMSTR"
+	xsetroot -name "$MPDSTR $TIMESTR $TEMPSTR $MEMSTR"
 
 	sleep $SLEEP_SEC
 done
