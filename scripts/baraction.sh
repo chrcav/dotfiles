@@ -26,8 +26,14 @@ while :; do
 	MPDSTR="$MPCSTAT"
 
 	TIMESTR=$(date '+%a %Y-%b-%d %H:%M:%S %Z')
-	echo -e "$TEMPSTR | $MEMSTR | $MPDSTR | $TIMESTR "
-	xsetroot -name "$TEMPSTR | $MEMSTR | $MPDSTR | $TIMESTR"
+	BATINFO=$(acpi 2>/dev/null)
+	if [[ $? -ne 0 ]]; then
+		echo -e "$TEMPSTR | $MEMSTR | $MPDSTR | $TIMESTR "
+		xsetroot -name "$TEMPSTR | $MEMSTR | $MPDSTR | $TIMESTR"
+	else
+		echo -e "$TEMPSTR | $BATINFO | $MEMSTR | $MPDSTR | $TIMESTR "
+		xsetroot -name "$TEMPSTR | $BATINFO | $MEMSTR | $MPDSTR | $TIMESTR"
+	fi
 
 	sleep $SLEEP_SEC
 done
