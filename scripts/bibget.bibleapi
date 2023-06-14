@@ -1,5 +1,6 @@
 #!/bin/bash
 
+asv_id=06125adad2d5898a-01
 kjv_id=de4e12af7f28f599-02
 skb_id=fa4317c59f0825e0-01 # Swedish Kärnbibeln
 
@@ -29,8 +30,9 @@ if [[ ! -z "$verse2" ]]; then
 fi
 #echo "$passage_id"
 
-bible_id=$kjv_id
+bible_id=$asv_id
 case ${ver,,} in
+  "asv") bible_id=$asv_id ;;
   "kjv") bible_id=$kjv_id ;;
   "skb") bible_id=$skb_id ;;
 esac

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if  [[ -n $1 ]]; then
+  curl -Ls 'https://crux.ninja/portdb/search/?q='${1}'&f=json' | jq .
+fi

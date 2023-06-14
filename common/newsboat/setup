@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$(which newsboat)" ]; then
+  echo Need to install newsboat.
+  exit 1
+fi
+
+mkdir ~/.config/ 2>/dev/null
+unlink "$HOME/.newsboat" 2>/dev/null
+ln -sf "$PWD" "$HOME/.newsboat"
+

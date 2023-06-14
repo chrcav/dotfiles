@@ -101,8 +101,8 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " vim-racket
   Plug 'wlangstroth/vim-racket'
   " vlime common lisp plugin
-  "Plug 'vlime/vlime', {'rtp': 'vim/'}
-  Plug 'sjl/tslime.vim'
+  Plug 'vlime/vlime', {'rtp': 'vim/'}
+  "Plug 'sjl/tslime.vim'
 
   " ------------------
   " git functionality
@@ -188,7 +188,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   endif
 
   if exists('g:plugs["simple-dark"]')
-    colorscheme simple-dark
+    colorscheme simple-dark-transparent
   endif
 
   if exists('g:plugs["vim-pandoc"]')

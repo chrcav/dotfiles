@@ -1,0 +1,45 @@
+#!/bin/bash
+
+function auth {
+  curl -X POST 'https://id.twitch.tv/oauth2/token' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-d 'client_id='$TWITCH_CLIENT_ID'&client_secret='$TWITCH_CLIENT_SECRET'&grant_type=client_credentials'
+}
+
+function live {
+  curl -s -X GET 'https://api.twitch.tv/helix/streams?user_login='$1 -H 'Client-Id: '$TWITCH_CLIENT_ID -H 'Authorization: Bearer '$TWITCH_CLIENT_OAUTH | jq -r '.data[0].type'
+}
+
+function sched {
+  broadcastid=$(curl -s  -X GET 'https://api.twitch.tv/helix/users?login='$1 -H 'Client-Id: '$TWITCH_CLIENT_ID -H 'Authorization: Bearer '$TWITCH_CLIENT_OAUTH | jq -r .data[].id)
+  start=$(curl -s -X GET 'https://api.twitch.tv/helix/schedule?first=1&broadcaster_id='$broadcastid -H 'Client-Id: '$TWITCH_CLIENT_ID -H 'Authorization: Bearer '$TWITCH_CLIENT_OAUTH | jq -r '.data.segments[0].start_time')
+  [[ $start == 'null' ]] && echo 0 || date -d $start +%s
+}
+
+function wait_and_watch {
+  next_live=$(sched $1)
+  while true; do
+    is_live=$(live $1)
+    [[ $is_live != 'live' ]] || break
+    (( $(date +%s) > $next_live + (15*60) )) && echo "next live is in the past must be ended or skipped" && return
+    echo "$1 not live yet"
+    date -d @$next_live
+    (( $(date +%s) + (15*60) < $next_live )) && echo 'Next Stream is: '$(( $next_live - $(date +%s) ))' seconds in future' && return
+    sleep 30
+  done
+  watch $1
+}
+
+function watch {
+  youtube-dl -o - "https://twitch.tv/$1" | mpv - -vo sdl
+}
+
+case $1 in
+  'auth') auth ;;
+  'live?') live $2 ;;
+  'sched') echo 'Next Scheduled Stream:'
+    date -d @$(sched $2) ;;
+  'watch') watch $2 ;;
+  'wait_and_watch') wait_and_watch $2 ;;
+  *) echo "unknown option $1"
+esac

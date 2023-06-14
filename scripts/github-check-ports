@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+for pkg in $(grep -l github.com */Pkgfile); do
+  . $pkg
+  if [[ ! -z $source ]]; then
+    if [[ "$source[0]" =~ "archive" ]]; then
+      latest=$(gh repo view --json latestRelease  ${source[0]%archive*} | jq -r '.latestRelease.tagName')
+    elif [[ "$source[0]" =~ "releases" ]]; then
+      latest=$(gh repo view --json latestRelease  ${source[0]%releases*} | jq -r '.latestRelease.tagName')
+    fi
+
+    if [[ $latest != "null" ]] && [[ "${latest#*v}" != "$version" ]]; then
+      echo "port" $pkg
+      echo "latest version is ${latest#*v}; current version is $version"
+      read -p "update Pkgfile? (yes/no)" update
+      if [[ "$update" == "yes" ]]; then
+        echo "updating version to $latest"
+        sed -i s/$version/${latest#*v}/ $pkg
+      fi
+    fi
+  fi
+done

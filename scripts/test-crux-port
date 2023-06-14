@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker run -e JOBS=8 -v /home/chris/repos/github/chrcav/crux-ports/cc:/cc crux-test-port:3.7 /usr/bin/prt-get depinst -fr "$@"
