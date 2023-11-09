@@ -6,8 +6,11 @@ SLEEP_SEC=5
 while :; do
 	#spectrwm bar_print can't handle UTF-8 characters, such as degree symbol
 	#Core 0:      +67.0°C  (crit = +100.0°C)
-	eval $(sensors 2>/dev/null | sed s/[°+]//g | awk '/^Core 0/ {printf "CORE0TEMP=%s;", $3}; /^Core 1/ {printf "CORE1TEMP=%s;",$3}; /^Core 2/ {printf "CORE2TEMP=%s;",$3}; /^Core 3/ {printf "CORE3TEMP=%s;",$3}; /^fan1/ {printf "FANSPD=%s;",$2};' -)
-	TEMPSTR="Tcpu=$CORE0TEMP,$CORE1TEMP,$CORE2TEMP,$CORE3TEMP F=$FANSPD"
+	cputemps=$(sensors coretemp-isa-0000 2>/dev/null | sed s/[°+]//g)
+	eval $(echo "$cputemps" | awk '/^Package id 0/ {printf "COREMAXTEMP=%s;", $4}; /^Core 0/ {printf "CORE0TEMP=%s;", $3};' -)
+	TEMPSTR="Tcpu=$COREMAXTEMP,$CORE0TEMP"
+	eval $(sensors amdgpu-pci-0300 2>/dev/null | sed s/[°+]//g | awk '/^fan1/ {printf "GPUFANSPD=%s;", $2}; /^edge/ {printf "GPUEDGETEMP=%s;", $2}; /^junction/ {printf "GPUJUNCTEMP=%s;",$2}; /^mem/ {printf "GPUMEMTEMP=%s;",$2};' -)
+	TEMPSTR+=" | Tgpu=$GPUEDGETEMP,$GPUJUNCTEMP,$GPUMEMTEMP F=$GPUFANSPD"
 
 	eval $(awk '/^MemTotal/ {printf "MTOT=%s;", $2}; /^MemAvailable/ {printf "MAVAIL=%s;",$2}; /^MemFree/ {printf "MFREE=%s;",$2}' /proc/meminfo)
 	MUSED=$(( $MTOT - $MFREE ))

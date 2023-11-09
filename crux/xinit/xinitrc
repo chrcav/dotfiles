@@ -17,6 +17,7 @@ case $session in
     dwm          ) baraction.sh 1>/dev/null 2>&1 & exec dbus-run-session -- dwm;;
     i3|i3wm      ) exec dbus-run-session -- i3;;
     spectrwm     ) exec dbus-run-session -- spectrwm;;
+    stumpwm      ) exec dbus-run-session -- /home/chris/repos/github/stumpwm/stumpwm/stumpwm;;
     # No known session, try to run it as command
     *            ) exec $1;;
 esac

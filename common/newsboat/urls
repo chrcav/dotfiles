@@ -1,21 +1,31 @@
-https://www.hempuli.com/blogblog/feed
-https://www.pentadact.com/feed
-https://distractionware.com/blog/feed/
+https://www.hempuli.com/blogblog/feed gamedev
+https://www.pentadact.com/feed gamedev
+https://distractionware.com/blog/feed/ gamedev
+https://tek256.com/posts/ tech gamedev
 
-http://dtrace.org/blogs/bmc/feed/rss/
-https://tek256.com/posts/
-https://blog.kingcons.io/rss.xml
-https://stevelosh.com/rss.xml
+http://dtrace.org/blogs/bmc/feed/rss/ tech
+https://blog.kingcons.io/rss.xml tech
+https://stevelosh.com/rss.xml tech
+https://etodd.io/index.xml tech
+http://ratfactor.com/atom.xml tech
 
-https://www.relay.fm/penaddict/feed
-http://penaddict.com/blog?format=rss
-http://feeds.feedburner.com/AnnaHavron
-https://www.gentlemanstationer.com/?format=rss
-https://analogoffice.net/feed.xml
-http://mnmlscholar.com/blog?format=rss
-https://mountainofink.com/?format=rss
-https://www.afleetingripple.com/blog-feed.xml
-https://extrafinewriting.substack.com/feed
-http://inksharks.blogspot.com/feeds/posts/default
-https://www.shellshore.com/rss/
-https://dimenovelraven.com/?format=rss
+http://feeds.feedburner.com/AnnaHavron lifestyle
+https://analogoffice.net/feed.xml "analog life"
+https://micro.canneddragons.net/feed.xml lifestyle
+
+http://penaddict.com/blog?format=rss pens stationery
+http://mnmlscholar.com/blog?format=rss pens stationery
+https://www.afleetingripple.com/blog-feed.xml pens stationery
+https://extrafinewriting.substack.com/feed pens stationery
+http://inksharks.blogspot.com/feeds/posts/default pens stationery
+https://www.shellshore.com/rss/ pens stationery
+https://dimenovelraven.com/?format=rss pens stationery
+https://stationery.pizza/feed.rss pens stationery
+https://www.thosewithwords.com/blog?format=rss pens stationery
+
+http://disasterpeace.com/blog/rss music
+
+https://anchor.fm/s/b420155c/podcast/rss podcast pens stationery
+https://www.relay.fm/penaddict/feed podcast pens stationery
+https://feed.podbean.com/tokyoinklings/feed.xml podcast pens stationery
+https://anchor.fm/s/90c9bf4/podcast/rss podcast pens stationery

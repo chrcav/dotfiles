@@ -1,4 +1,4 @@
 #!/bin/sh
 
-rmmod nvidia_drm nvidia_modeset nvidia
-modprobe nvidia nvidia_modeset nvidia_drm
+rmmod nvidia_uvm nvidia_drm nvidia_modeset nvidia
+modprobe nvidia nvidia_modeset nvidia_drm nvidia_uvm

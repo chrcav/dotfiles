@@ -9,14 +9,20 @@ for pkg in $(grep -l github.com */Pkgfile); do
     elif [[ "$source[0]" =~ "releases" ]]; then
       latest=$(gh repo view --json latestRelease  ${source[0]%releases*} | jq -r '.latestRelease.tagName')
     fi
+    repo_string=${source[0]#*github.com/}
+    repo_string=${repo_string%/releases*}
 
     if [[ $latest != "null" ]] && [[ "${latest#*v}" != "$version" ]]; then
+      gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/$repo_string/releases | jq -r '.[].tag_name' | head -n5
       echo "port" $pkg
       echo "latest version is ${latest#*v}; current version is $version"
-      read -p "update Pkgfile? (yes/no)" update
+      read -p "update Pkgfile? (yes/no/version)" update
       if [[ "$update" == "yes" ]]; then
         echo "updating version to $latest"
         sed -i s/$version/${latest#*v}/ $pkg
+      elif [[ "$update" != "no" ]]; then
+        echo "updating version to $update"
+        sed -i s/$version/${update#*v}/ $pkg
       fi
     fi
   fi

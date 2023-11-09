@@ -64,3 +64,5 @@ $HOME/repos/github/chrcav
 
 
 alias vi=vim
+alias rip-cd='cyanrip -D {album_artist}-{album}'
+alias rip-hdcd='cyanrip -H -D {album_artist}-{album}'
