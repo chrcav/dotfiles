@@ -65,6 +65,20 @@ set hidden
 
 set history=100
 
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
+
+" leader stuff
+let mapleader = ","
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader><space> :noh<cr>
+
 syntax enable
 " allow sensing the filetype
 filetype plugin on

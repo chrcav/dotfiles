@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+cmd=$1
+
+finan_file=$HOME/.finan
+
+if [[ "$cmd" == "mod" ]]; then
+  sed -i "/$2/ccost $2 $3" "$finan_file"
+  if [[ $? -ne 0 ]]; then
+    cmd=add
+  fi
+fi
+
+if [[ "$cmd" == "add" ]]; then
+  echo "cost $2 $3" >> "$finan_file"
+elif [[ "$cmd" == "inc" ]]; then
+  echo "inc $2" >> "$finan_file"
+elif [[ "$cmd" == "show" ]]; then
+  if [[ "$2" == "" ]]; then
+    cat "$finan_file"
+  else
+    grep "$2" "$finan_file"
+  fi
+elif [[ "$cmd" == "tot" ]]; then
+	only_costs=0
+  if [[ "$2" == "cost" ]]; then
+		only_costs=1
+	fi
+  tot=0
+  while read line; do
+    if [[ "$line" =~ "cost" ]]; then
+      tot=$(echo $tot - ${line##* } | bc)
+    elif [[ $only_costs -eq 0 ]]; then
+      tot=$(echo $tot + ${line##* } | bc)
+    fi
+  done <"$finan_file"
+  echo $tot
+fi

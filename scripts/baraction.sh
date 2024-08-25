@@ -12,6 +12,8 @@ while :; do
 	eval $(sensors amdgpu-pci-0300 2>/dev/null | sed s/[°+]//g | awk '/^fan1/ {printf "GPUFANSPD=%s;", $2}; /^edge/ {printf "GPUEDGETEMP=%s;", $2}; /^junction/ {printf "GPUJUNCTEMP=%s;",$2}; /^mem/ {printf "GPUMEMTEMP=%s;",$2};' -)
 	TEMPSTR+=" | Tgpu=$GPUEDGETEMP,$GPUJUNCTEMP,$GPUMEMTEMP F=$GPUFANSPD"
 
+	WTTR=$(cat /tmp/wttr)
+
 	eval $(awk '/^MemTotal/ {printf "MTOT=%s;", $2}; /^MemAvailable/ {printf "MAVAIL=%s;",$2}; /^MemFree/ {printf "MFREE=%s;",$2}' /proc/meminfo)
 	MUSED=$(( $MTOT - $MFREE ))
 	MUSEDPT=$(( ($MUSED * 100) / $MTOT ))
@@ -23,6 +25,8 @@ while :; do
 	MPCSTAT=${MPCSTAT//$'\n'/;  }
 	if [[ "$MPCSTAT" =~ "paused" ]]; then
 		MPCSTAT="mpd paused"
+	elif [[ "$MPCSTAT" =~ "volume: n/a" ]]; then
+		MPCSTAT="mpd playlist empty"
 	else
 		MPCSTAT="mpd playing ${MPCSTAT%%; *}"
 	fi
@@ -31,11 +35,11 @@ while :; do
 	TIMESTR=$(date '+%a %Y-%b-%d %H:%M:%S %Z')
 	BATINFO=$(acpi 2>/dev/null)
 	if [[ $? -ne 0 ]]; then
-		echo -e "$TEMPSTR | $MEMSTR | $MPDSTR | $TIMESTR "
-		xsetroot -name "$TEMPSTR | $MEMSTR | $MPDSTR | $TIMESTR"
+		echo -e "$TEMPSTR | $MEMSTR | $MPDSTR | $WTTR | $TIMESTR "
+		xsetroot -name "$TEMPSTR | $MEMSTR | $MPDSTR | $WTTR | $TIMESTR"
 	else
-		echo -e "$TEMPSTR | $BATINFO | $MEMSTR | $MPDSTR | $TIMESTR "
-		xsetroot -name "$TEMPSTR | $BATINFO | $MEMSTR | $MPDSTR | $TIMESTR"
+		echo -e "$TEMPSTR | $BATINFO | $MEMSTR | $MPDSTR | $WTTR | $TIMESTR "
+		xsetroot -name "$TEMPSTR | $BATINFO | $MEMSTR | $MPDSTR | $WTTR | $TIMESTR"
 	fi
 
 	sleep $SLEEP_SEC

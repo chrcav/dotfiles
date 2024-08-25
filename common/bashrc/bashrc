@@ -2,6 +2,7 @@ export EDITOR=vim
 export VISUAL=vim
 export EDITOR_PREFIX=vim
 export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
 
 export NOTES_DIR=$HOME/repos/github/chrcav/notes
 export ZET_DIR=$HOME/repos/github/chrcav/zettelkasten
@@ -64,5 +65,6 @@ $HOME/repos/github/chrcav
 
 
 alias vi=vim
-alias rip-cd='cyanrip -D {album_artist}-{album}'
-alias rip-hdcd='cyanrip -H -D {album_artist}-{album}'
+alias rip-cd='cyanrip -T simple -D {album_artist}-{album}'
+alias rip-hdcd='cyanrip -T simple -H -D {album_artist}-{album}'
+alias crawlspace='curl --silent "http://192.168.1.250/ccfebd112823&Stats"'
