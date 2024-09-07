@@ -5,7 +5,7 @@ if [ -z "$(which lynx)" ]; then
   exit 1
 fi
 
-mkdir ~/.config/ 2>/dev/null
-unlink "$HOME/.confid/lynx" 2>/dev/null
-ln -sf "$PWD" "$HOME/.config/lynx"
+mkdir -p ~/.config/
+unlink "$HOME/.config/lynx"
+ln -s "$PWD" "$HOME/.config/lynx"
 

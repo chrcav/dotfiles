@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -z "$(which xinit)" ]; then
+if [ -z "$(which startx)" ]; then
   echo Need to install xorg-xinit.
   exit 1
 fi

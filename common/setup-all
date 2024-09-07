@@ -2,5 +2,7 @@
 
 for dir in */; do cd $dir; ./setup; cd ..; done
 
-unlink "$HOME/.local/bin/scripts"
+if [ -e "$HOME/.local/bin/scripts" ]; then
+  unlink "$HOME/.local/bin/scripts"
+fi
 ln -sf "$REPOS/github/chrcav/dotfiles/scripts" "$HOME/.local/bin/scripts"
