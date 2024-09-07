@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if [ -z "$(which xinit)" ]; then
-  echo Need to install xorg-xinit.
-  exit 1
-fi
-
-ln -sf "$PWD/xinitrc" "$HOME/.xinitrc"
-
