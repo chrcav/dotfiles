@@ -1,9 +1,9 @@
 # Typical laptop setup, with wifi, brightness, battery etc, for
 
 # fonts we'll be re-using here and there
-awesome: &awesome "Font Awesome 6 Free:style=solid:pixelsize=14"
+awesome: &awesome Font Awesome 6 Free:style=solid:pixelsize=14
 awesome_brands: &awesome_brands Font Awesome 6 Brands:pixelsize=16
-julia: &julia JuliaMono:pixelsize=22
+julia: &julia JuliaMono:pixelsize=16
 bg_default: &bg_default {stack: [{background: {color: 81A1C1ff}}, {underline: {size: 4, color: D8DEE9ff}}]}
 
 std_underline: &std_underline {underline: { size: 2, color: ff0000ff}}
@@ -121,8 +121,8 @@ bar:
   right:
     - removables:
         anchors:
-          drive: &drive { text: , font: *julia}
-          optical: &optical {text: , font: *julia}
+          drive: &drive { text: , font: *awesome}
+          optical: &optical {text: , font: *awesome}
         spacing: 5
         content:
           map:
@@ -154,9 +154,18 @@ bar:
                     ~carrier: {empty: {}}
                     carrier:
                       map:
-                        default: {string: {text: , font: *julia, foreground: ffffff66}}
+                        default: {string: {text: , font: *awesome, foreground: ffffff66}}
                         conditions:
-                          state == up && ipv4 != "": {string: {text: , font: *julia}}
+                          state == up && ipv4 != "": {string: {text: , font: *awesome}}
+              name == enp5s0:
+                map:
+                  conditions:
+                    ~carrier: {empty: {}}
+                    carrier:
+                      map:
+                        default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                        conditions:
+                          state == up && ipv4 != "": {string: {text: , font: *awesome}}
     - network:
         poll-interval: 1000
         content:
@@ -178,6 +187,45 @@ bar:
                           ipv4 == "":
                             - string: {text: , font: *awesome, foreground: ffffff66}
                             - string: {text: "{ssid} {dl-speed:mb}/{ul-speed:mb} Mb/s", foreground: ffffff66}
+
+    - pipewire:
+        anchors:
+          volume: &volume
+            conditions:
+              muted:
+                string:
+                  text: "0%"
+                  on-click:
+                    middle: sh -c "amixer set Master 1+ toggle"
+              ~muted:
+                string:
+                  text: "{cubic_volume}%"
+                  on-click:
+                    left: sh -c "amixer sset Master 2%-"
+                    middle: sh -c "amixer set Master 1+ toggle"
+                    right: sh -c "amixer sset Master 2%+"
+        content:
+          list:
+            items:
+              - map:
+                  conditions:
+                    type == "sink":
+                      map:
+                        conditions:
+                          icon == "audio-headset-bluetooth":
+                            string: {text: "󰋋", font: *awesome}
+                          muted: {string: {text: "󰝟", font: *awesome}}
+                        default:
+                          - ramp:
+                              tag: cubic_volume
+                              items:
+                                - string: {text: "󰕿", font: *awesome}
+                                - string: {text: "󰖀", font: *awesome}
+                                - string: {text: "󰕾", font: *awesome}
+                    type == "source":
+                      - string: {text: "", font: *awesome, left-margin: 5}
+              - map:
+                  <<: *volume
     - backlight:
         name: 32e60000.dsi.0
         content: [ string: {text: , font: *awesome}, string: {text: "{percent}%"}]

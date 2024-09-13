@@ -1,6 +1,7 @@
 export EDITOR=vim
 export VISUAL=vim
 export EDITOR_PREFIX=vim
+export LANG=en_US.utf8
 export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
