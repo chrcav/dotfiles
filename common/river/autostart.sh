@@ -6,6 +6,10 @@ wlr-randr --output HDMI-A-1 --transform 270
 pkill -f mpd
 mpd
 
+pkill -f swaybg
+swaybg -m fill -i ~/.cache/wallpaper &
+
+
 pkill -f yambar
 yambar &
 
