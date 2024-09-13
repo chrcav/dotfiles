@@ -141,7 +141,7 @@ bar:
         content:
           progress-bar:
             tag: mem
-            length: 20
+            length: 5
             start: {string: {text: "["}}
             end: {string: {text: "]"}}
             fill: {string: {text: "="}}
@@ -155,7 +155,14 @@ bar:
             margin: 0
             text: "{wttr}"
             font: *julia
-
+    - script:
+        path: ~/.config/yambar/scripts/wttr-poll.sh
+        args: []
+        content:
+          string: 
+                margin: 0
+                text: "{wttr}"
+                font: *julia
     - removables:
         anchors:
           drive: &drive { text: , font: *awesome}
@@ -243,9 +250,9 @@ bar:
                 string:
                   text: "{cubic_volume}%"
                   on-click:
+                    left: sh -c "amixer sset Master 2%-"
                     middle: sh -c "amixer set Master 1+ toggle"
-                    wheel-down: sh -c "amixer sset Master 2%-"
-                    wheel-up: sh -c "amixer sset Master 2%+"
+                    right: sh -c "amixer sset Master 2%+"
         content:
           list:
             items:
@@ -268,6 +275,58 @@ bar:
                       - string: {text: "", font: *awesome, left-margin: 5}
               - map:
                   <<: *volume
+    - backlight:
+        name: 32e60000.dsi.0
+        content: [ string: {text: , font: *awesome}, string: {text: "{percent}%"}]
+    - battery:
+        name: BAT0
+        poll-interval: 30000
+        anchors:
+          discharging: &discharging
+            list:
+              items:
+                - ramp:
+                    tag: capacity
+                    items:
+                      - string: {text: , foreground: ff0000ff, font: *awesome}
+                      - string: {text: , foreground: ffa600ff, font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , foreground: 00ff00ff, font: *awesome}
+                - string: {text: "{capacity}% {estimate}"}
+        content:
+          map:
+            conditions:
+              state == unknown:
+                <<: *discharging
+              state == Discharging:
+                <<: *discharging
+              state == charging:
+                - string: {text: , foreground: 00ff00ff, font: *awesome}
+                - string: {text: "{capacity}% {estimate}"}
+              state == full:
+                - string: {text: , foreground: 00ff00ff, font: *awesome}
+                - string: {text: "{capacity}% full"}
+              state == "not charging":
+                - ramp:
+                    tag: capacity
+                    items:
+                      - string: {text:  , foreground: ff0000ff, font: *awesome}
+                      - string: {text:  , foreground: ffa600ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                - string: {text: "{capacity}%"}
     - clock:
         time-format: "%H:%M %Z"
         content:
