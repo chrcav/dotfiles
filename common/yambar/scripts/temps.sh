@@ -7,11 +7,11 @@ while :; do
 	if [ "$HOST" == "bayesiandesktop" ]; then
 		#spectrwm bar_print can't handle UTF-8 characters, such as degree symbol
 		#Core 0:      +67.0°C  (crit = +100.0°C)
-		cputemps=$(sensors coretemp-isa-0000 2>/dev/null)
-		eval $(echo "$cputemps" | awk '/^Package id 0/ {printf "COREMAXTEMP=%s;", $4}; /^Core 0/ {printf "CORE0TEMP=%s;", $3};' -)
-		cputemp="Tcpu=$COREMAXTEMP,$CORE0TEMP"
-		eval $(sensors amdgpu-pci-0300 2>/dev/null | awk '/^fan1/ {printf "GPUFANSPD=%s;", $2}; /^edge/ {printf "GPUEDGETEMP=%s;", $2}; /^junction/ {printf "GPUJUNCTEMP=%s;",$2}; /^mem/ {printf "GPUMEMTEMP=%s;",$2};' -)
-		gputemp="Tgpu=$GPUEDGETEMP,$GPUJUNCTEMP,$GPUMEMTEMP F=$GPUFANSPD"
+		cputemps=$(sensors -u coretemp-isa-0000 2>/dev/null)
+		eval $(echo "$cputemps" | awk '/temp1_input/ {printf "COREMAXTEMP=%s;", $2}; /^  temp2_input/ {printf "CORE0TEMP=%s;", $2};' -)
+		cputemp="Tcpu=$COREMAXTEMP"
+		eval $(sensors -u amdgpu-pci-0300 2>/dev/null | awk '/^  fan1_input/ {printf "GPUFANSPD=%s;", $2}; /^  temp1_input/ {printf "GPUEDGETEMP=%s;", $2}; /^  temp2_input/ {printf "GPUJUNCTEMP=%s;",$2}; /^  temp3_input/ {printf "GPUMEMTEMP=%s;",$2};' -)
+		gputemp="Tgpu=$GPUEDGETEMP,$GPUJUNCTEMP,$GPUMEMTEMP"
 	elif [ "$HOST" == "mntpocketr" ]; then
 		cputemps=$(sensors cpu_thermal-virtual-0 2>/dev/null)
 		eval $(echo "$cputemps" | awk '/^temp1/ {printf "CORETEMP=%s;", $2};' -)

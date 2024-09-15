@@ -11,8 +11,8 @@ swaybg -m fill -i ~/.cache/wallpaper &
 
 
 pkill -f yambar
-yambar &
+~/.config/yambar/scripts/start.sh
 
 pkill -f swayidle
 swayidle -w \
-  timeout 300 'wlr-randr --output DSI-1 --off' resume 'wlr-randr --output DSI-1 --on' &
+  timeout 300 'wlopm --off \*' resume 'wlopm --on \*' &

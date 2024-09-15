@@ -4,9 +4,17 @@
 awesome: &awesome Font Awesome 6 Free:style=solid:pixelsize=14
 awesome_brands: &awesome_brands Font Awesome 6 Brands:pixelsize=16
 julia: &julia JuliaMono:pixelsize=16
-bg_default: &bg_default {stack: [{background: {color: 81A1C1ff}}, {underline: {size: 4, color: D8DEE9ff}}]}
+underline_color: &underline_color a59fb5ff
+bg_highlight: &bg_highlight 8f82b5cc
+bg_default: &bg_default {stack: [{background: {color: *bg_highlight}}, {underline: {size: 4, color: *underline_color}}]}
+fg_alt: &fg_alt 7963b5ff
+fg_crit: &fg_crit ff0000ff
+fg_warn: &fg_warn ffa600ff
+fg_info: &fg_ok 0000ffff
+fg_ok: &fg_ok 00ff00ff
+fg_sub: &fg_sub ffffff66
 
-std_underline: &std_underline {underline: { size: 2, color: ff0000ff}}
+std_underline: &std_underline {underline: { size: 2, color: *underline_color}}
 
 # This is THE bar configuration
 bar:
@@ -57,7 +65,7 @@ bar:
               state == urgent:
                 map:
                   <<: *river_base
-                  deco: {background: {color: D08770ff}}
+                  deco: {background: {color: *bg_highlight}}
               state == focused:
                 map:
                   <<: *river_base
@@ -76,7 +84,7 @@ bar:
               state == invisible && occupied:
                 map:
                   <<: *river_base
-                  deco: {underline: {size: 3, color: ea6962ff}}
+                  deco: {underline: {size: 3, color: *underline_color}}
 
     - foreign-toplevel:
         content:
@@ -84,7 +92,7 @@ bar:
             conditions:
               ~activated: {empty: {}}
               activated:
-                - string: {text: "{app-id}", foreground: ffa0a0ff}
+                - string: {text: "{app-id}", foreground: *fg_alt}
                 - string: {text: ": {title}"}
 
   right:
@@ -100,7 +108,7 @@ bar:
                     ~carrier: {empty: {}}
                     carrier:
                       map:
-                        default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                        default: {string: {text: , font: *awesome, foreground: *fg_sub}}
                         conditions:
                           state == up && ipv4 != "":
                             - string: {text: , font: *awesome}
@@ -110,7 +118,7 @@ bar:
                     ~carrier: {empty: {}}
                     carrier:
                       map:
-                        default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                        default: {string: {text: , font: *awesome, foreground: *fg_sub}}
                         conditions:
                           state == up && ipv4 != "":
                             - string: {text: , font: *awesome}
@@ -122,9 +130,9 @@ bar:
             conditions:
               name == wlan0:
                 map:
-                  default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                  default: {string: {text: , font: *awesome, foreground: *fg_sub}}
                   conditions:
-                    state == down: {string: {text: , font: *awesome, foreground: ff0000ff}}
+                    state == down: {string: {text: , font: *awesome, foreground: *fg_crit}}
                     state == up:
                       map:
                         default:
@@ -132,7 +140,7 @@ bar:
 
                         conditions:
                           ipv4 == "":
-                            - string: {text: , font: *awesome, foreground: ffffff66}
+                            - string: {text: , font: *awesome, foreground: *fg_sub}
 
     - clock:
         time-format: "%H:%M %Z"

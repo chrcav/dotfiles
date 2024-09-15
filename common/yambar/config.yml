@@ -4,9 +4,17 @@
 awesome: &awesome Font Awesome 6 Free:style=solid:pixelsize=14
 awesome_brands: &awesome_brands Font Awesome 6 Brands:pixelsize=16
 julia: &julia JuliaMono:pixelsize=16
-bg_default: &bg_default {stack: [{background: {color: 81A1C1ff}}, {underline: {size: 4, color: D8DEE9ff}}]}
+underline_color: &underline_color a59fb5ff
+bg_highlight: &bg_highlight 8f82b5cc
+bg_default: &bg_default {stack: [{background: {color: *bg_highlight}}, {underline: {size: 4, color: *underline_color}}]}
+fg_alt: &fg_alt 7963b5ff
+fg_crit: &fg_crit ff0000ff
+fg_warn: &fg_warn ffa600ff
+fg_info: &fg_ok 0000ffff
+fg_ok: &fg_ok 00ff00ff
+fg_sub: &fg_sub ffffff66
 
-std_underline: &std_underline {underline: { size: 2, color: ff0000ff}}
+std_underline: &std_underline {underline: { size: 2, color: *underline_color}}
 
 # This is THE bar configuration
 bar:
@@ -57,7 +65,7 @@ bar:
               state == urgent:
                 map:
                   <<: *river_base
-                  deco: {background: {color: D08770ff}}
+                  deco: {background: {color: *bg_highlight}}
               state == focused:
                 map:
                   <<: *river_base
@@ -76,7 +84,7 @@ bar:
               state == invisible && occupied:
                 map:
                   <<: *river_base
-                  deco: {underline: {size: 3, color: ea6962ff}}
+                  deco: {underline: {size: 3, color: *underline_color}}
 
     - foreign-toplevel:
         content:
@@ -84,7 +92,7 @@ bar:
             conditions:
               ~activated: {empty: {}}
               activated:
-                - string: {text: "{app-id}", foreground: ffa0a0ff}
+                - string: {text: "{app-id}", foreground: *fg_alt}
                 - string: {text: ": {title}"}
 
   center:
@@ -97,23 +105,23 @@ bar:
               - map:
                   conditions:
                     state == playing: {string: {text: "{artist}"}}
-                    state == paused: {string: {text: "{artist}", foreground: ffffff66}}
-              - string: {text: " | ", foreground: ffffff66}
+                    state == paused: {string: {text: "{artist}", foreground: *fg_sub}}
+              - string: {text: " | ", foreground: *fg_sub}
               - map:
                   conditions:
                     state == playing: {string: {text: "{album}"}}
-                    state == paused: {string: {text: "{album}", foreground: ffffff66}}
-              - string: {text: " | ", foreground: ffffff66}
+                    state == paused: {string: {text: "{album}", foreground: *fg_sub}}
+              - string: {text: " | ", foreground: *fg_sub}
               - map:
                   conditions:
-                    state == playing: {string: {text: "{title}", foreground: ffa0a0ff}}
-                    state == paused: {string: {text: "{title}", foreground: ffffff66}}
+                    state == playing: {string: {text: "{title}", foreground: *fg_alt}}
+                    state == paused: {string: {text: "{title}", foreground: *fg_sub}}
 
         content:
           map:
             margin: 10
             conditions:
-              state == offline: {string: {text: offline, foreground: ff0000ff}}
+              state == offline: {string: {text: offline, foreground: *fg_crit}}
               state == stopped: {string: {text: stopped}}
               state == paused: {list: *artist_album_title}
               state == playing: {list: *artist_album_title}
@@ -127,6 +135,10 @@ bar:
               id < 0:
                 - string: {text: cpu, font: *julia}
                 - string: {text: "{cpu}%"}
+    - mem:
+        poll-interval: 2500
+        content:
+          string: {text: "{used:mb}MB"}
     - script:
         path: ~/.config/yambar/scripts/temps.sh
         args: []
@@ -135,18 +147,6 @@ bar:
             margin: 1
             text: "{cputemp} {gputemp}"
             font: *julia
-    - script:
-        path: ~/.config/yambar/scripts/mem.sh
-        args: []
-        content:
-          progress-bar:
-            tag: mem
-            length: 20
-            start: {string: {text: "["}}
-            end: {string: {text: "]"}}
-            fill: {string: {text: "="}}
-            empty: {string: {text: " "}}
-            indicator: {string: {text: "{memusedpct}"}}
     - script:
         path: ~/.config/yambar/scripts/wttr-poll.sh
         args: []
@@ -192,7 +192,7 @@ bar:
                     ~carrier: {empty: {}}
                     carrier:
                       map:
-                        default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                        default: {string: {text: , font: *awesome, foreground: *fg_sub}}
                         conditions:
                           state == up && ipv4 != "":
                             - string: {text: , font: *awesome}
@@ -203,7 +203,7 @@ bar:
                     ~carrier: {empty: {}}
                     carrier:
                       map:
-                        default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                        default: {string: {text: , font: *awesome, foreground: *fg_sub}}
                         conditions:
                           state == up && ipv4 != "":
                             - string: {text: , font: *awesome}
@@ -216,9 +216,9 @@ bar:
             conditions:
               name == wlan0:
                 map:
-                  default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                  default: {string: {text: , font: *awesome, foreground: *fg_sub}}
                   conditions:
-                    state == down: {string: {text: , font: *awesome, foreground: ff0000ff}}
+                    state == down: {string: {text: , font: *awesome, foreground: *fg_crit}}
                     state == up:
                       map:
                         default:
@@ -227,8 +227,8 @@ bar:
 
                         conditions:
                           ipv4 == "":
-                            - string: {text: , font: *awesome, foreground: ffffff66}
-                            - string: {text: "{ssid} {dl-speed:mb}/{ul-speed:mb} Mb/s", foreground: ffffff66}
+                            - string: {text: , font: *awesome, foreground: *fg_sub}
+                            - string: {text: "{ssid} {dl-speed:mb}/{ul-speed:mb} Mb/s", foreground: *fg_sub}
 
     - pipewire:
         anchors:
