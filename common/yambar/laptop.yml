@@ -138,7 +138,7 @@ bar:
     - mem:
         poll-interval: 2500
         content:
-          string: {text: "{used:mv}MB"}
+          string: {text: "{used:mb}MB"}
     - script:
         path: ~/.config/yambar/scripts/temps.sh
         args: []
@@ -223,12 +223,12 @@ bar:
             conditions:
               muted:
                 string:
-                  text: "0%"
+                  text: ""
                   on-click:
                     middle: sh -c "amixer set Master 1+ toggle"
               ~muted:
                 string:
-                  text: "{cubic_volume}%"
+                  text: ""
                   on-click:
                     middle: sh -c "amixer set Master 1+ toggle"
                     wheel-down: sh -c "amixer sset Master 2%-"

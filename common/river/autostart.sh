@@ -10,7 +10,6 @@ pkill -f swaybg
 swaybg -m fill -i ~/.cache/wallpaper &
 
 
-pkill -f yambar
 ~/.config/yambar/scripts/start.sh
 
 pkill -f swayidle
