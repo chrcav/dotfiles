@@ -1,7 +1,7 @@
 [user]
 	name = Christopher Cavanaugh
 	email = christopher@chrcav.dev
-	signingkey = 975C8D89F1208AB8
+	signingkey = 7775F4A9F28A0470
 [init]
 	defaultBranch = main
 [pull]
