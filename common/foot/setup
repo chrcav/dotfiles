@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$(which foot)" ]; then
+  echo Need to install foot.
+  exit 1
+fi
+
+mkdir ~/.config/ 2>/dev/null
+unlink "$HOME/.config/foot" 2>/dev/null
+ln -sf "$PWD" "$HOME/.config/foot"
+
