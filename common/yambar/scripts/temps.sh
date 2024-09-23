@@ -13,11 +13,11 @@ while :; do
 		eval $(sensors -u amdgpu-pci-0300 2>/dev/null | awk '/^  fan1_input/ {printf "GPUFANSPD=%s;", $2}; /^  temp1_input/ {printf "GPUEDGETEMP=%s;", $2}; /^  temp2_input/ {printf "GPUJUNCTEMP=%s;",$2}; /^  temp3_input/ {printf "GPUMEMTEMP=%s;",$2};' -)
 		gputemp="Tgpu=$GPUEDGETEMP,$GPUJUNCTEMP,$GPUMEMTEMP"
 	elif [ "$HOST" == "mntpocketr" ]; then
-		cputemps=$(sensors cpu_thermal-virtual-0 2>/dev/null)
-		eval $(echo "$cputemps" | awk '/^temp1/ {printf "CORETEMP=%s;", $2};' -)
+		cputemps=$(sensors -u cpu_thermal-virtual-0 2>/dev/null)
+		eval $(echo "$cputemps" | awk '/^  temp1_input/ {printf "CORETEMP=%s;", $2};' -)
 		cputemp="Tcpu=$CORETEMP"
-		soctemps=$(sensors soc_thermal-virtual-0 2>/dev/null)
-		eval $(echo "$soctemps" | awk '/^temp1/ {printf "SOCTEMP=%s;", $2};' -)
+		soctemps=$(sensors -u soc_thermal-virtual-0 2>/dev/null)
+		eval $(echo "$soctemps" | awk '/^  temp1_input/ {printf "SOCTEMP=%s;", $2};' -)
 		soctemp=",Tsoc=$SOCTEMP"
 	fi
 

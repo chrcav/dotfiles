@@ -140,12 +140,20 @@ bar:
         content:
           string: {text: "{used:mb}MB"}
     - script:
-        path: ~/.config/yambar/scripts/temps.sh
-        args: []
+        path: ~/.config/yambar/scripts/temp.sh
+        args: ["coretemp-isa-0000", "5"]
         content:
           string:
             margin: 1
-            text: "{cputemp} {gputemp}"
+            text: "cpu:{Core_0_temp2_input},{Package_id_0_temp1_input}"
+            font: *julia
+    - script:
+        path: ~/.config/yambar/scripts/temp.sh
+        args: ["amdgpu-pci-0300", "5"]
+        content:
+          string:
+            margin: 1
+            text: "gpu:{edge_temp1_input}"
             font: *julia
     - script:
         path: ~/.config/yambar/scripts/wttr-poll.sh

@@ -140,12 +140,20 @@ bar:
         content:
           string: {text: "{used:mb}MB"}
     - script:
-        path: ~/.config/yambar/scripts/temps.sh
-        args: []
+        path: ~/.config/yambar/scripts/temp.sh
+        args: ["cpu_thermal-virtual-0", "5"]
         content:
           string:
             margin: 1
-            text: "{cputemp} {soctemp}"
+            text: "cpu:{temp1_temp1_input}"
+            font: *julia
+    - script:
+        path: ~/.config/yambar/scripts/temp.sh
+        args: ["soc_thermal-virtual-0", "5"]
+        content:
+          string:
+            margin: 1
+            text: "soc:{temp1_temp1_input}"
             font: *julia
     - removables:
         anchors:
