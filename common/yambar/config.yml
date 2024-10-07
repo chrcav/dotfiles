@@ -145,7 +145,7 @@ bar:
         content:
           string:
             margin: 1
-            text: "cpu:{Core_0_temp2_input},{Package_id_0_temp1_input}"
+            text: "cpu:{Core_0_temp2_input}°C,{Package_id_0_temp1_input}°C"
             font: *julia
     - script:
         path: ~/.config/yambar/scripts/temp.sh
@@ -153,7 +153,7 @@ bar:
         content:
           string:
             margin: 1
-            text: "gpu:{edge_temp1_input}"
+            text: "gpu:{edge_temp1_input}°C,{junction_temp2_input}°C,{mem_temp3_input}°C"
             font: *julia
     - script:
         path: ~/.config/yambar/scripts/wttr-poll.sh

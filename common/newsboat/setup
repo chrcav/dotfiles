@@ -6,6 +6,6 @@ if [ -z "$(which newsboat)" ]; then
 fi
 
 mkdir ~/.config/ 2>/dev/null
-unlink "$HOME/.newsboat" 2>/dev/null
-ln -sf "$PWD" "$HOME/.newsboat"
+unlink "$HOME/.config/newsboat" 2>/dev/null
+ln -sf "$PWD" "$HOME/.config/newsboat"
 

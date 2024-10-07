@@ -1,0 +1,14 @@
+#!/bin/sh
+# taken from rwxrob/dotfiles
+
+# The world's best pastebin terminal replacement. I'm so in love.
+# You can call this from *within* vi!
+
+if [ -n "$1" ]; then
+  exec curl -s "localhost:8888/$1"
+fi
+
+url=$(curl -s -F 'f:1=<-' -F 'id:1=mmmm' http://localhost:8888)
+echo "$url"
+which xclip >/dev/null || exit 0
+echo "$url" | xclip
